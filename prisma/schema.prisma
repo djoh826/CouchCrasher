@@ -1,0 +1,186 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model bankaccount {
+  accountno Int     @id
+  type      String? @db.VarChar(15)
+  host      host    @relation(fields: [accountno], references: [bankaccountno], onDelete: Cascade, onUpdate: NoAction, map: "bankaccountfk1")
+}
+
+model booking {
+  bid               Int                 @id
+  guestuid          Int
+  propertyid        Int
+  checkin           DateTime?           @db.Date
+  checkout          DateTime?           @db.Date
+  numguest          Int?
+  totalprice        Float?
+  nightsstayed      Int?
+  promotioncode     String?             @db.VarChar(20)
+  tax               Float?
+  cancellationdate  DateTime?           @db.Date
+  proprefundrate    Float?
+  refundedamount    Float?
+  guest             guest               @relation(fields: [guestuid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "bookingfk1")
+  property          property            @relation(fields: [propertyid], references: [pid], onDelete: Cascade, onUpdate: NoAction, map: "bookingfk2")
+  guestpastbookings guestpastbookings[]
+}
+
+model creditcard {
+  cardno     Int      @id
+  csv        Int
+  expiration DateTime @db.Date
+  name       String   @db.VarChar(30)
+  address    String?  @db.VarChar(100)
+  guest      guest[]
+}
+
+model guest {
+  uid               Int                 @id
+  numguestratings   Int?
+  avgguestratings   Float?
+  creditcardno      Int?
+  booking           booking[]
+  creditcard        creditcard?         @relation(fields: [creditcardno], references: [cardno], onDelete: Cascade, onUpdate: NoAction, map: "guest_creditcard_fk")
+  users             users               @relation(fields: [uid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "guestfk1")
+  guestpastbookings guestpastbookings[]
+  message           message[]
+  propertyreview    propertyreview[]
+}
+
+model guestorhostreview {
+  ghrid      Int       @id
+  guestuid   Int
+  hostuid    Int
+  comment    String    @db.VarChar(200)
+  rating     Int
+  reviewdate DateTime? @db.Date
+}
+
+model guestpastbookings {
+  guestuid Int
+  bid      Int
+  guest    guest   @relation(fields: [guestuid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "guestpastbookingsfk1")
+  booking  booking @relation(fields: [bid], references: [bid], onDelete: Cascade, onUpdate: NoAction, map: "guestpastbookingsfk2")
+
+  @@id([guestuid, bid])
+}
+
+model host {
+  uid               Int          @id
+  numhostratings    Int?
+  avghostratings    Float?
+  avgpropertyrating Float?
+  bankaccountno     Int?         @unique
+  bankaccount       bankaccount?
+  users             users        @relation(fields: [uid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "hostfk1")
+  message           message[]
+  property          property[]
+}
+
+model message {
+  mid      Int       @id
+  guestuid Int
+  hostuid  Int
+  datetime DateTime? @db.Date
+  receiver String?   @db.VarChar(30)
+  sender   String?   @db.VarChar(30)
+  body     String?   @db.VarChar(400)
+  guest    guest     @relation(fields: [guestuid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "messagefk1")
+  host     host      @relation(fields: [hostuid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "messagefk2")
+}
+
+model property {
+  pid                Int                  @id
+  name               String               @db.VarChar(30)
+  address            String               @db.VarChar(100)
+  hostuid            Int
+  maxguests          Int?
+  numbedrooms        Int?
+  description        String               @db.VarChar(100)
+  numbathrooms       Int?
+  cancelperiod       String?              @db.VarChar(20)
+  refundrate         Float?
+  numratings         Int?
+  avgratings         Float?
+  nightlyfee         Float?
+  cleaningfee        Float?
+  servicefee         Float?
+  booking            booking[]
+  host               host                 @relation(fields: [hostuid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "propertyfk1")
+  propertycategories propertycategories[]
+  propertyphotos     propertyphotos[]
+  propertyreview     propertyreview[]
+  propertytimeslots  propertytimeslots[]
+}
+
+model propertycategories {
+  propertycategoryid Int      @id @default(autoincrement())
+  propertyid         Int
+  category           String   @db.VarChar(20)
+  property           property @relation(fields: [propertyid], references: [pid], onDelete: Cascade, onUpdate: NoAction, map: "propertycategoriesfk1")
+
+  @@unique([propertyid, category])
+}
+
+model propertyphotos {
+  photoid    Int      @id @default(autoincrement())
+  propertyid Int
+  photourl   String   @db.VarChar(200)
+  property   property @relation(fields: [propertyid], references: [pid], onDelete: Cascade, onUpdate: NoAction, map: "propertyphotosfk1")
+}
+
+model propertyreview {
+  prid                 Int                    @id
+  guestuid             Int
+  propertyid           Int
+  comment              String?                @db.VarChar(200)
+  propreviewdate       DateTime?              @db.Date
+  cleanlinessrating    Int?
+  accuracyrating       Int?
+  communicationrating  Int?
+  checkinrating        Int?
+  valuerating          Int?
+  overallrating        Int?
+  guest                guest                  @relation(fields: [guestuid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "propertyreviewfk1")
+  property             property               @relation(fields: [propertyid], references: [pid], onDelete: Cascade, onUpdate: NoAction, map: "propertyreviewfk2")
+  propertyreviewphotos propertyreviewphotos[]
+}
+
+model propertyreviewphotos {
+  reviewphotoid  Int            @id @default(autoincrement())
+  reviewid       Int
+  photourl       String         @db.VarChar(200)
+  propertyreview propertyreview @relation(fields: [reviewid], references: [prid], onDelete: Cascade, onUpdate: NoAction, map: "propertyreviewphotosfk1")
+}
+
+model propertytimeslots {
+  slotid       Int      @id @default(autoincrement())
+  propertyid   Int
+  startdate    DateTime @db.Date
+  enddate      DateTime @db.Date
+  availability Int?     @default(1) @db.SmallInt
+  property     property @relation(fields: [propertyid], references: [pid], onDelete: Cascade, onUpdate: NoAction, map: "propertytimeslotsfk1")
+}
+
+model users {
+  uid        Int      @id
+  name       String   @db.VarChar(30)
+  email      String   @db.VarChar(30)
+  password   String   @db.VarChar(30)
+  dob        DateTime @db.Date
+  pictureurl String?  @db.VarChar(200)
+  address    String?  @db.VarChar(100)
+  phone      String   @db.VarChar(15)
+  emname     String?  @db.VarChar(30)
+  emrel      String?  @db.VarChar(20)
+  ememail    String   @db.VarChar(20)
+  guest      guest?
+  host       host?
+}
