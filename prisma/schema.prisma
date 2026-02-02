@@ -173,7 +173,7 @@ model users {
   uid        Int      @id
   name       String   @db.VarChar(30)
   email      String   @db.VarChar(30)
-  password   String   @db.VarChar(30)
+  password   String   @db.VarChar(255)
   dob        DateTime @db.Date
   pictureurl String?  @db.VarChar(200)
   address    String?  @db.VarChar(100)
