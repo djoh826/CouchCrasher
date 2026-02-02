@@ -23,7 +23,7 @@ export async function POST(req: Request) {
 
     const user = await prisma.users.create({
         data: {
-        uid: Date.now(), // just using date for now
+        uid: Math.floor(Date.now() / 1000), // just using date for now
         email: email,
         password: hashed,
         name: name,
