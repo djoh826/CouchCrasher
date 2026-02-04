@@ -7,19 +7,15 @@ export async function POST(req: Request) {
     const body = await req.json()
     const { email, password, name, phone, dob } = body
 
-
     const existing = await prisma.users.findFirst({
         where: { email: email },
     })
-
 
     if (existing) {
         return NextResponse.json({ error: 'Email already in use' }, { status: 400 })
     }
 
-
     const hashed = await hashPassword(password)
-
 
     const user = await prisma.users.create({
         data: {
@@ -32,7 +28,6 @@ export async function POST(req: Request) {
         ememail: email,
         },
     })
-
 
     return NextResponse.json({ id: user.uid })
 }
