@@ -181,6 +181,7 @@ model users {
   emname     String?  @db.VarChar(30)
   emrel      String?  @db.VarChar(20)
   ememail    String   @db.VarChar(20)
+  isadmin    Boolean? @default(false)
   guest      guest?
   host       host?
 }

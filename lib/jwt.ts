@@ -41,3 +41,5 @@ export function checkIfLoggedIn(req: Request) {
     throw err
   }
 }
+
+// TODO: check roles 
