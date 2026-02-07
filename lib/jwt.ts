@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import { prisma } from '@/lib/prisma';
 
 const JWT_SECRET = process.env.JWT_SECRET!
 
@@ -42,4 +43,15 @@ export function checkIfLoggedIn(req: Request) {
   }
 }
 
-// TODO: check roles 
+export async function isAdmin(jwt: JwtPayload) {
+  const user = await prisma.users.findUnique({ where: { uid: jwt.uid } });
+  if (!user) {
+    console.error("User not found in database")
+    return false
+  } else if (!user.isadmin) {
+    console.error('User is not admin')
+    return false
+  } else {
+    return true
+  }
+}
