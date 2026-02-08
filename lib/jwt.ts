@@ -26,32 +26,41 @@ export function checkIfLoggedIn(req: Request) {
   const authHeader = req.headers.get('Authorization');
 
   if (!authHeader?.startsWith('Bearer ')) {
-    throw new Error ("401: Unauthorized")
+    throw new HttpError(401, 'Unauthorized');
   }
 
   const token = authHeader.split(' ')[1];
+  const jwt = verifyJwt(token);
 
-  try {
-    const jwt = verifyJwt(token);
-    if (typeof jwt === 'string') {
-      throw new Error (jwt)
-    } else {
-      return jwt
-    }
-  } catch (err) {
-    throw err
+  if (typeof jwt === 'string') {
+    throw new HttpError(401, jwt);
   }
+
+  return jwt
 }
 
 export async function isAdmin(jwt: JwtPayload) {
-  const user = await prisma.users.findUnique({ where: { uid: jwt.uid } });
+  const user = await prisma.users.findUnique({
+    where: { uid: jwt.uid },
+  });
+
   if (!user) {
-    console.error("User not found in database")
-    return false
-  } else if (!user.isadmin) {
-    console.error('User is not admin')
-    return false
-  } else {
-    return true
+    throw new HttpError(404, 'User not found');
+  }
+
+  if (!user.isadmin) {
+    throw new HttpError(403, 'Forbidden: admin access required');
+  }
+
+  return true;
+}
+
+
+export class HttpError extends Error {
+  status: number
+
+  constructor(status: number, message: string) {
+    super(message)
+    this.status = status
   }
 }
