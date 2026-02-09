@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { checkIfLoggedIn, HttpError } from '@/lib/jwt';
+import { isAdmin, checkIfLoggedIn, HttpError } from '@/lib/jwt';
 
 // /user/update
 // Updates own user
@@ -9,16 +9,18 @@ import { checkIfLoggedIn, HttpError } from '@/lib/jwt';
 export async function POST(req: Request) {
 
     const body = await req.json()
-    const {  email, password, name, phone, dob, 
+    const { uid, email, password, name, phone, dob, 
         pictureurl, address, emname, emrel, ememail, guest, host } = body
 
     try {
+        
         const jwtPayload = checkIfLoggedIn(req)
+        if (!isAdmin(jwtPayload)) throw new HttpError(401, "Unauthorized")
 
-        // update own user
+        // update any user
         const response = await prisma.users.update({
             where: {
-                uid: jwtPayload.uid
+                uid: uid
             },
             data: {
                 name: name,
