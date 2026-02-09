@@ -6,21 +6,19 @@ import { checkIfLoggedIn, isAdmin, HttpError } from '@/lib/jwt';
 // Updates own user
 // If password entered, check if password meets requirements?
 // Change so only updates fields that are given
-export async function GET(req: Request) {
+export async function POST(req: Request) {
 
     const body = await req.json()
-    const { uid, email, password, name, phone, dob, 
+    const {  email, password, name, phone, dob, 
         pictureurl, address, emname, emrel, ememail, guest, host } = body
 
     try {
         const jwtPayload = checkIfLoggedIn(req)
-        
-        // check if uid is current user
 
-        // update one user
+        // update own user
         const response = await prisma.users.update({
             where: {
-                uid: uid
+                uid: jwtPayload.uid
             },
             data: {
                 name: name,
