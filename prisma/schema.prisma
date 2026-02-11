@@ -99,7 +99,6 @@ model message {
 model property {
   pid                Int                  @id
   name               String               @db.VarChar(30)
-  address            String               @db.VarChar(100)
   hostuid            Int
   maxguests          Int?
   numbedrooms        Int?
@@ -112,12 +111,25 @@ model property {
   nightlyfee         Float?
   cleaningfee        Float?
   servicefee         Float?
+  street             String?              @db.VarChar(100)
+  city               String?              @db.VarChar(50)
+  state              String?              @db.VarChar(50)
+  zipcode            String?              @db.VarChar(20)
+  country            String?              @db.VarChar(50)
+  latitude           Float?
+  longitude          Float?
   booking            booking[]
   host               host                 @relation(fields: [hostuid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "propertyfk1")
   propertycategories propertycategories[]
   propertyphotos     propertyphotos[]
   propertyreview     propertyreview[]
   propertytimeslots  propertytimeslots[]
+
+  @@index([city], map: "idx_property_city")
+  @@index([latitude], map: "idx_property_lat")
+  @@index([latitude, longitude], map: "idx_property_lat_lng")
+  @@index([longitude], map: "idx_property_lng")
+  @@index([state], map: "idx_property_state")
 }
 
 model propertycategories {
