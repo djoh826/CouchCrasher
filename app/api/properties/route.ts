@@ -1,24 +1,19 @@
-import { prisma } from '@/lib/prisma';
-import { NextResponse } from 'next/server';
-import { checkIfLoggedIn, isAdmin, HttpError } from '@/lib/jwt';
+import { prisma } from "@/lib/prisma";
+import { NextResponse } from "next/server";
+import { checkIfLoggedIn, isAdmin, HttpError } from "@/lib/jwt";
 
 // /api/properties GET
 // Gets all properties
 export async function GET(req: Request) {
-  
   try {
-    const jwtPayload = checkIfLoggedIn(req)
+    const jwtPayload = checkIfLoggedIn(req);
 
     // return all properties
     const response = await prisma.property.findMany();
     return NextResponse.json(response);
-
   } catch (err) {
     if (err instanceof HttpError) {
-      return NextResponse.json(
-        { error: err.message },
-        { status: err.status }
-      );
+      return NextResponse.json({ error: err.message }, { status: err.status });
     }
   }
 }
