@@ -68,11 +68,7 @@ export async function isHost(jwt: JwtPayload) {
     where: { uid: jwt.uid },
   });
 
-  if (!host) {
-    throw new HttpError(403, "Forbidden: host required");
-  }
-
-  return true;
+  return host;
 }
 
 export class HttpError extends Error {

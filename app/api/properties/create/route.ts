@@ -27,7 +27,16 @@ export async function POST(req: Request) {
 
   try {
     const jwtPayload = checkIfLoggedIn(req);
-    await isHost(jwtPayload);
+    if (!(await isHost(jwtPayload))) {
+      await prisma.host.create({
+        data: {
+          uid: jwtPayload.uid,
+          numhostratings: 0,
+          avghostratings: 0,
+          avgpropertyrating: 0,
+        },
+      });
+    }
 
     const property = await prisma.property.create({
       data: {
