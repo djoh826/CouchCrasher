@@ -100,24 +100,24 @@ model property {
   pid                Int                  @id
   name               String               @db.VarChar(30)
   hostuid            Int
-  maxguests          Int?
-  numbedrooms        Int?
+  maxguests          Int
+  numbedrooms        Int
   description        String               @db.VarChar(100)
-  numbathrooms       Int?
-  cancelperiod       String?              @db.VarChar(20)
-  refundrate         Float?
-  numratings         Int?
-  avgratings         Float?
-  nightlyfee         Float?
-  cleaningfee        Float?
-  servicefee         Float?
-  street             String?              @db.VarChar(100)
-  city               String?              @db.VarChar(50)
-  state              String?              @db.VarChar(50)
-  zipcode            String?              @db.VarChar(20)
-  country            String?              @db.VarChar(50)
-  latitude           Float?
-  longitude          Float?
+  numbathrooms       Int
+  cancelperiod       String               @db.VarChar(20)
+  refundrate         Float
+  numratings         Int                  @default(0)
+  avgratings         Float                @default(0.0)
+  nightlyfee         Float
+  cleaningfee        Float
+  servicefee         Float
+  street             String               @db.VarChar(100)
+  city               String               @db.VarChar(50)
+  state              String               @db.VarChar(50)
+  zipcode            String               @db.VarChar(20)
+  country            String               @db.VarChar(50)
+  latitude           Float                @default(0.0)
+  longitude          Float                @default(0.0)
   booking            booking[]
   host               host                 @relation(fields: [hostuid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "propertyfk1")
   propertycategories propertycategories[]
