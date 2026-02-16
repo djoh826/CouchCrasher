@@ -55,6 +55,14 @@ export async function isAdmin(jwt: JwtPayload) {
   return true;
 }
 
+export async function checkIfAdmin(jwt: JwtPayload) {
+  const user = await prisma.users.findUnique({
+    where: { uid: jwt.uid },
+  });
+
+  return user;
+}
+
 export async function isHost(jwt: JwtPayload) {
   const user = await prisma.users.findUnique({
     where: { uid: jwt.uid },
