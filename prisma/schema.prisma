@@ -25,7 +25,6 @@ model booking {
   promotioncode     String?             @db.VarChar(20)
   tax               Float?
   cancellationdate  DateTime?           @db.Date
-  proprefundrate    Float?
   refundedamount    Float?
   guest             guest               @relation(fields: [guestuid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "bookingfk1")
   property          property            @relation(fields: [propertyid], references: [pid], onDelete: Cascade, onUpdate: NoAction, map: "bookingfk2")

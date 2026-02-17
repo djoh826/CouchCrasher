@@ -63,6 +63,18 @@ export async function checkIfAdmin(jwt: JwtPayload) {
   return user;
 }
 
+export async function checkIfHostOfProperty(
+  jwtPayload: JwtPayload,
+  propertyId: number,
+) {
+  return await prisma.property.findFirst({
+    where: {
+      hostuid: jwtPayload.uid,
+      pid: propertyId,
+    },
+  });
+}
+
 export async function isHost(jwt: JwtPayload) {
   const user = await prisma.users.findUnique({
     where: { uid: jwt.uid },

@@ -1,6 +1,11 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { checkIfLoggedIn, HttpError, checkIfAdmin } from "@/lib/jwt";
+import {
+  checkIfLoggedIn,
+  HttpError,
+  checkIfAdmin,
+  checkIfHostOfProperty,
+} from "@/lib/jwt";
 
 // /api/properties/categories?propertyId=123 GET
 // Returns categories for a specific property
@@ -47,12 +52,7 @@ export async function POST(req: Request) {
     } = await req.json();
 
     // Validate that user is the host of the property
-    const isUserHostOfProperty = await prisma.property.findFirst({
-      where: {
-        hostuid: jwtPayload.uid,
-        pid: propertyId,
-      },
-    });
+    const isUserHostOfProperty = checkIfHostOfProperty(jwtPayload, propertyId);
 
     if (!isUserHostOfProperty && !(await checkIfAdmin(jwtPayload))) {
       throw new HttpError(401, "User is not host of this property or an admin");
@@ -90,12 +90,7 @@ export async function DELETE(req: Request) {
     }: { categoryIds: number[]; propertyId: number } = body;
 
     // check if host of property or admin
-    const isUserHostOfProperty = await prisma.property.findFirst({
-      where: {
-        hostuid: jwtPayload.uid,
-        pid: propertyId,
-      },
-    });
+    const isUserHostOfProperty = checkIfHostOfProperty(jwtPayload, propertyId);
 
     if (!isUserHostOfProperty && !(await checkIfAdmin(jwtPayload))) {
       throw new HttpError(401, "User is not host of this property or an admin");
