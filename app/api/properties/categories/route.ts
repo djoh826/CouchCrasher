@@ -2,8 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { checkIfLoggedIn, HttpError, checkIfAdmin } from "@/lib/jwt";
 
-// /api/photos?propertyId=123 GET
-// Returns photos for a specific property
+// /api/properties/categories?propertyId=123 GET
+// Returns categories for a specific property
 export async function GET(req: Request) {
   try {
     checkIfLoggedIn(req);
@@ -14,10 +14,13 @@ export async function GET(req: Request) {
       throw new HttpError(400, "Bad request, Missing propertyId");
     }
 
-    // return all photos of respective property
-    const response = await prisma.propertyphotos.findMany({
+    // select all categories associated with property
+    const response = await prisma.propertycategories.findMany({
       where: {
         propertyid: Number(propertyId),
+      },
+      select: {
+        category: true,
       },
     });
 
@@ -29,18 +32,18 @@ export async function GET(req: Request) {
   }
 }
 
-// /api/photos POST
-// Add photos to a specific property. Only usable by host of the property (or admin)
+// /api/properties/categories POST
+// Add categeories to a specific property. Only usable by host of the property (or admin)
 export async function POST(req: Request) {
   try {
     const jwtPayload = checkIfLoggedIn(req);
 
     const {
       propertyId,
-      photoUrls,
+      categoryIds,
     }: {
       propertyId: number;
-      photoUrls: string[];
+      categoryIds: number[];
     } = await req.json();
 
     // Validate that user is the host of the property
@@ -55,14 +58,14 @@ export async function POST(req: Request) {
       throw new HttpError(401, "User is not host of this property or an admin");
     }
 
-    const createdPhotos = await prisma.propertyphotos.createMany({
-      data: photoUrls.map((url) => ({
-        photourl: url,
+    const categoryCount = await prisma.propertycategories.createMany({
+      data: categoryIds.map((id) => ({
+        categoryid: id,
         propertyid: propertyId,
       })),
     });
 
-    return NextResponse.json({ success: true, created: createdPhotos.count });
+    return NextResponse.json({ success: true, created: categoryCount.count });
   } catch (err) {
     if (err instanceof HttpError) {
       return NextResponse.json({ error: err.message }, { status: err.status });
@@ -75,14 +78,16 @@ export async function POST(req: Request) {
   }
 }
 
-// /api/photos DELETE
-// Deletes photos for a specific property
+// /api/properties/categories DELETE
+// Deletes categories for a specific property
 export async function DELETE(req: Request) {
   try {
     const jwtPayload = checkIfLoggedIn(req);
     const body = await req.json();
-    const { photoIds, propertyId }: { photoIds: number[]; propertyId: number } =
-      body;
+    const {
+      categoryIds,
+      propertyId,
+    }: { categoryIds: number[]; propertyId: number } = body;
 
     // check if host of property or admin
     const isUserHostOfProperty = await prisma.property.findFirst({
@@ -96,11 +101,11 @@ export async function DELETE(req: Request) {
       throw new HttpError(401, "User is not host of this property or an admin");
     }
 
-    // deletes photos with ids
-    const response = await prisma.propertyphotos.deleteMany({
+    // deletes categories with ids
+    const response = await prisma.propertycategories.deleteMany({
       where: {
-        photoid: {
-          in: photoIds,
+        categoryid: {
+          in: categoryIds,
         },
       },
     });

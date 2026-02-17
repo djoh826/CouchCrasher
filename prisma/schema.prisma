@@ -133,12 +133,12 @@ model property {
 }
 
 model propertycategories {
-  propertycategoryid Int      @id @default(autoincrement())
-  propertyid         Int
-  category           String   @db.VarChar(20)
-  property           property @relation(fields: [propertyid], references: [pid], onDelete: Cascade, onUpdate: NoAction, map: "propertycategoriesfk1")
+  propertyid Int
+  categoryid Int
+  category   category @relation(fields: [categoryid], references: [categoryid], onDelete: Cascade, onUpdate: NoAction, map: "propertycategories_category_fk")
+  property   property @relation(fields: [propertyid], references: [pid], onDelete: Cascade, onUpdate: NoAction, map: "propertycategoriesfk1")
 
-  @@unique([propertyid, category])
+  @@id([propertyid, categoryid])
 }
 
 model propertyphotos {
@@ -196,4 +196,10 @@ model users {
   isadmin    Boolean? @default(false)
   guest      guest?
   host       host?
+}
+
+model category {
+  categoryid         Int                  @id @default(autoincrement())
+  name               String               @unique @db.VarChar(20)
+  propertycategories propertycategories[]
 }
