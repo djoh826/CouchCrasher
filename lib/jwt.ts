@@ -39,7 +39,7 @@ export function checkIfLoggedIn(req: Request) {
   return jwt;
 }
 
-export async function isAdmin(jwt: JwtPayload) {
+export async function checkIfadmin(jwt: JwtPayload) {
   const user = await prisma.users.findUnique({
     where: { uid: jwt.uid },
   });
@@ -55,7 +55,7 @@ export async function isAdmin(jwt: JwtPayload) {
   return true;
 }
 
-export async function checkIfAdmin(jwt: JwtPayload) {
+export async function isAdmin(jwt: JwtPayload) {
   const user = await prisma.users.findUnique({
     where: { uid: jwt.uid },
   });

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import {
   checkIfLoggedIn,
   HttpError,
-  checkIfAdmin,
+  isAdmin,
   checkIfHostOfProperty,
 } from "@/lib/jwt";
 
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
     // Validate that user is the host of the property
     const isUserHostOfProperty = checkIfHostOfProperty(jwtPayload, propertyId);
 
-    if (!isUserHostOfProperty && !(await checkIfAdmin(jwtPayload))) {
+    if (!isUserHostOfProperty && !(await isAdmin(jwtPayload))) {
       throw new HttpError(401, "User is not host of this property or an admin");
     }
 
@@ -92,7 +92,7 @@ export async function DELETE(req: Request) {
     // check if host of property or admin
     const isUserHostOfProperty = checkIfHostOfProperty(jwtPayload, propertyId);
 
-    if (!isUserHostOfProperty && !(await checkIfAdmin(jwtPayload))) {
+    if (!isUserHostOfProperty && !(await isAdmin(jwtPayload))) {
       throw new HttpError(401, "User is not host of this property or an admin");
     }
 

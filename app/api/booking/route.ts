@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import {
   checkIfLoggedIn,
   HttpError,
-  checkIfAdmin,
+  isAdmin,
   checkIfHostOfProperty,
 } from "@/lib/jwt";
 
@@ -29,7 +29,7 @@ export async function GET(req: Request) {
 
     if (
       !isUserGuestOfThisBooking &&
-      !(await checkIfAdmin(jwtPayload)) &&
+      !(await isAdmin(jwtPayload)) &&
       !(await checkIfHostOfProperty(jwtPayload, Number(propertyId)))
     ) {
       console.error(
@@ -127,7 +127,7 @@ export async function DELETE(req: Request) {
 
     if (
       !isUserGuestOfThisBooking &&
-      !(await checkIfAdmin(jwtPayload)) &&
+      !(await isAdmin(jwtPayload)) &&
       !(await checkIfHostOfProperty(jwtPayload, Number(propertyId)))
     ) {
       console.error(

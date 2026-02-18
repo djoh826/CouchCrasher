@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { hashPassword } from "@/lib/auth";
-import { checkIfLoggedIn, isAdmin, HttpError } from "@/lib/jwt";
+import { checkIfLoggedIn, checkIfadmin, HttpError } from "@/lib/jwt";
 import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 export async function GET(req: Request) {
   try {
     const jwtPayload = checkIfLoggedIn(req);
-    if (!isAdmin(jwtPayload)) throw new HttpError(401, "Unauthorized");
+    if (!checkIfadmin(jwtPayload)) throw new HttpError(401, "Unauthorized");
 
     console.log("Clearing existing data…");
 

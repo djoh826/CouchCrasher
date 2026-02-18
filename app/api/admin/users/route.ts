@@ -1,12 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { checkIfLoggedIn, isAdmin, HttpError } from "@/lib/jwt";
+import { checkIfLoggedIn, checkIfadmin, HttpError } from "@/lib/jwt";
 
 // /api/users GET
 export async function GET(req: Request) {
   try {
     const jwtPayload = checkIfLoggedIn(req);
-    await isAdmin(jwtPayload);
+    await checkIfadmin(jwtPayload);
 
     // return all users
     const users = await prisma.users.findMany({ take: 100 });
