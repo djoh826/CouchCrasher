@@ -69,17 +69,37 @@ export async function POST(req: Request) {
       endDate: Date;
     } = await req.json();
 
+    // parse dates
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
     // check if property is available
     const isPropertyUnavailable = await prisma.propertytimeslots.findFirst({
       where: {
         propertyid: propertyId,
-        AND: [{ startdate: { lt: endDate } }, { enddate: { gt: startDate } }],
+        startdate: { lt: end },
+        enddate: { gt: start },
       },
     });
+
+    console.log("Available? : " + isPropertyUnavailable);
 
     if (isPropertyUnavailable) {
       console.error(`Property is busy between $(startDate) and $(endDate)`);
       throw new HttpError(401, "Property is busy then");
+    }
+
+    const isUserAGuestYet = await prisma.guest.findFirst({
+      where: {
+        uid: jwtPayload.uid,
+      },
+    });
+    if (!isUserAGuestYet) {
+      await prisma.guest.create({
+        data: {
+          uid: jwtPayload.uid,
+        },
+      });
     }
 
     const createBooking = await prisma.booking.create({
@@ -87,8 +107,8 @@ export async function POST(req: Request) {
         bid: Math.floor(Date.now() / 1000),
         guestuid: jwtPayload.uid,
         propertyid: propertyId,
-        checkin: startDate,
-        checkout: endDate,
+        checkin: start,
+        checkout: end,
       },
     });
 

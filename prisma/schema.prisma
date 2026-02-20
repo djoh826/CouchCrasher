@@ -172,12 +172,11 @@ model propertyreviewphotos {
 }
 
 model propertytimeslots {
-  slotid       Int      @id @default(autoincrement())
-  propertyid   Int
-  startdate    DateTime @db.Date
-  enddate      DateTime @db.Date
-  availability Int?     @default(1) @db.SmallInt
-  property     property @relation(fields: [propertyid], references: [pid], onDelete: Cascade, onUpdate: NoAction, map: "propertytimeslotsfk1")
+  slotid     Int      @id @default(autoincrement())
+  propertyid Int
+  startdate  DateTime @db.Date
+  enddate    DateTime @db.Date
+  property   property @relation(fields: [propertyid], references: [pid], onDelete: Cascade, onUpdate: NoAction, map: "propertytimeslotsfk1")
 }
 
 model users {
