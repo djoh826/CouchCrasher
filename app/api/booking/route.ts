@@ -82,8 +82,6 @@ export async function POST(req: Request) {
       },
     });
 
-    console.log("Available? : " + isPropertyUnavailable);
-
     if (isPropertyUnavailable) {
       console.error(`Property is busy between $(startDate) and $(endDate)`);
       throw new HttpError(401, "Property is busy then");
@@ -109,6 +107,14 @@ export async function POST(req: Request) {
         propertyid: propertyId,
         checkin: start,
         checkout: end,
+      },
+    });
+
+    const createTimeSlot = await prisma.propertytimeslots.create({
+      data: {
+        propertyid: propertyId,
+        startdate: start,
+        enddate: end,
       },
     });
 
