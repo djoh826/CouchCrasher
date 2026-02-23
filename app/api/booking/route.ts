@@ -6,8 +6,6 @@ import {
   isAdmin,
   checkIfHostOfProperty,
 } from "@/lib/jwt";
-import { redis } from "@/lib/redis";
-
 // /api/booking?bookingId=123&propertyId=123 GET
 // Returns all booking information
 export async function GET(req: Request) {
