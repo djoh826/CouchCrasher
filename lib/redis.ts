@@ -1,7 +1,7 @@
-import Redis from "ioredis";
+import { createClient } from "redis";
 
-export const redis = new Redis({
-  host: "127.0.0.1",
-  port: 6379,
-  // password: process.env.REDIS_PASSWORD, // if needed
+export const redis = createClient({
+  url: process.env.REDIS_URL,
 });
+
+await redis.connect();
