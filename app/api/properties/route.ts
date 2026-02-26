@@ -1,14 +1,11 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { checkIfLoggedIn, HttpError } from "@/lib/jwt";
+import { HttpError } from "@/lib/jwt";
 
 // /api/properties GET
 // Gets all properties
-export async function GET(req: Request) {
+export async function GET() {
   try {
-    const jwtPayload = checkIfLoggedIn(req);
-
-    // return all properties
     const response = await prisma.property.findMany({
       select: {
         name: true,
