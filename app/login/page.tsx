@@ -1,7 +1,7 @@
 "use client";
-import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Navbar from "../components/Navbar";
 
 export default function Login() {
   const [loginEmail, setLoginEmail] = useState("");
@@ -65,7 +65,7 @@ export default function Login() {
 
       // const token = data.token;
 
-      // Redirect to home page after login
+      // Redirect to home page and refresh (to load new jwt cookie) after login
       router.push("/");
     } catch (err) {
       console.error(err);
@@ -75,21 +75,7 @@ export default function Login() {
 
   return (
     <div className="layout">
-      <header className="site-header">
-        <nav className="primary-nav" aria-label="Primary navigation">
-          <ul className="nav-list">
-            <li>
-              <Link href="/browse">Browse properties</Link>
-            </li>
-            <li>
-              <Link href="/host">Create a listing</Link>
-            </li>
-            <li>
-              <Link href="/profile">Profile</Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
+      {/* <Navbar /> */}
       <main>
         <div className="background">
           <section className="login-bubble">

@@ -1,9 +1,9 @@
 "use client";
-
 import { useState } from "react";
 import Link from "next/link";
 import { getProperties } from "@/lib/apiEndpoints";
 import { Property } from "@/types";
+import Navbar from "./components/Navbar";
 // import { PropertyCard } from "@/components/PropertyCard";
 
 export default function Home() {
@@ -22,22 +22,6 @@ export default function Home() {
 
   return (
     <div className="layout">
-      <header className="site-header">
-        <nav className="primary-nav" aria-label="Primary navigation">
-          <ul className="nav-list">
-            <li>
-              <Link href="/browse">Browse properties</Link>
-            </li>
-            <li>
-              <Link href="/host">Create a listing</Link>
-            </li>
-            <li>
-              <Link href="/profile">Profile</Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
-
       <main className="main-content">
         <section className="hero">
           <h1>Live comfortably like at home, wherever you go</h1>
