@@ -8,6 +8,9 @@ export default function Login() {
   const [loginPassword, setLoginPassword] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
+  const [registerName, setRegisterName] = useState("");
+  const [registerPhone, setRegisterPhone] = useState("");
+  const [registerDOB, setRegisterDOB] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
 
@@ -137,6 +140,33 @@ export default function Login() {
                       value={registerPassword}
                       onChange={(e) => setRegisterPassword(e.target.value)}
                       className="password-input"
+                    ></input>
+                  </label>
+                  <label className="name-label">
+                    Full Name
+                    <input
+                      value={registerName}
+                      onChange={(e) => setRegisterName(e.target.value)}
+                      className="name-input"
+                      placeholder="John Smith"
+                    ></input>
+                  </label>
+                  <label className="phone-label">
+                    Phone
+                    <input
+                      value={registerPhone}
+                      onChange={(e) => setRegisterPhone(e.target.value)}
+                      className="phone-input"
+                      placeholder="1231231234"
+                    ></input>
+                  </label>
+                  <label className="dob-label">
+                    Date of Birth
+                    <input
+                      value={registerDOB}
+                      onChange={(e) => setRegisterDOB(e.target.value)}
+                      className="dob-input"
+                      placeholder="YYYY-MM-DD"
                     ></input>
                   </label>
 
