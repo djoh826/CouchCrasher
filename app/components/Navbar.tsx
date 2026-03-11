@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default async function Navbar({ loggedIn }: { loggedIn: boolean }) {
   return (
-    <header className="site-header">
+    <div className="site-header">
       <nav className="primary-nav" aria-label="Primary navigation">
         <ul className="nav-list">
           <li>
@@ -20,6 +20,6 @@ export default async function Navbar({ loggedIn }: { loggedIn: boolean }) {
           </li>
         </ul>
       </nav>
-    </header>
+    </div>
   );
 }
