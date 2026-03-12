@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { useAuth } from "@/lib/AuthContext";
 
-export default async function Navbar({ loggedIn }: { loggedIn: boolean }) {
+export default function Navbar() {
+  const { isLoggedIn } = useAuth();
+
   return (
     <div className="site-header">
       <nav className="primary-nav" aria-label="Primary navigation">
@@ -12,7 +15,7 @@ export default async function Navbar({ loggedIn }: { loggedIn: boolean }) {
             <Link href="/host">Create a listing</Link>
           </li>
           <li>
-            {loggedIn ? (
+            {isLoggedIn ? (
               <Link href="/profile">Profile</Link>
             ) : (
               <Link href="/login">Log in</Link>
