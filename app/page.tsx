@@ -3,8 +3,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { getProperties } from "@/lib/apiEndpoints";
 import { Property } from "@/types";
-import Navbar from "./components/Navbar";
-// import { PropertyCard } from "@/components/PropertyCard";
 
 export default function Home() {
   const [location, setLocation] = useState("");

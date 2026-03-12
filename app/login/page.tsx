@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Navbar from "../components/Navbar";
+import { useAuth, User } from "@/lib/AuthContext";
 
 export default function Login() {
   const [loginEmail, setLoginEmail] = useState("");
@@ -12,6 +12,7 @@ export default function Login() {
   const [registerPhone, setRegisterPhone] = useState("");
   const [registerDOB, setRegisterDOB] = useState("");
   const [error, setError] = useState("");
+  const { login } = useAuth();
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -32,7 +33,7 @@ export default function Login() {
         return;
       }
 
-      // const token = data.token;
+      login({ uid: data.uid, email: loginEmail });
 
       // Redirect to home page after login
       router.push("/");

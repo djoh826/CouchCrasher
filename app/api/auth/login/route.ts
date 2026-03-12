@@ -7,23 +7,23 @@ import { cookies } from "next/headers";
 export async function POST(req: Request) {
   const { email, password } = await req.json();
 
-  const user = await prisma.users.findFirst({
+  const dbUser = await prisma.users.findFirst({
     where: { email: email },
   });
 
-  if (!user) {
+  if (!dbUser) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }
 
-  const valid = await verifyPassword(password, user.password);
+  const valid = await verifyPassword(password, dbUser.password);
 
   if (!valid) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }
 
   const token: string = signJwt({
-    uid: user.uid,
-    email: user.email,
+    uid: dbUser.uid,
+    email: dbUser.email,
   });
 
   const cookieStore = await cookies();
