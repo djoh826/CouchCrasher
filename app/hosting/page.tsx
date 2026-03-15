@@ -1,4 +1,4 @@
-export default function HostingPage() {
+export default function Hosting() {
   const sections = [
     {
       id: "homes",
