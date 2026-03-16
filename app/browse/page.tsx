@@ -12,6 +12,7 @@ export default function Browse() {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
+        // /api/properties GET
         const data = await getProperties();
         setProperties(data);
       } catch (err) {

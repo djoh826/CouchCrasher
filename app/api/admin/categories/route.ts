@@ -1,13 +1,13 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { checkIfLoggedIn, HttpError, checkIfadmin } from "@/lib/jwt";
+import { checkIfLoggedIn, HttpError, checkIfAdmin } from "@/lib/jwt";
 
 // /api/admin/categories POST
 // Creates categories that properties can use
 export async function POST(req: Request) {
   try {
     const jwtPayload = checkIfLoggedIn(req);
-    await checkIfadmin(jwtPayload);
+    await checkIfAdmin(jwtPayload);
 
     const { name } = await req.json();
 
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 export async function DELETE(req: Request) {
   try {
     const jwtPayload = checkIfLoggedIn(req);
-    await checkIfadmin(jwtPayload);
+    await checkIfAdmin(jwtPayload);
     const { searchParams } = new URL(req.url);
     const categoryId = searchParams.get("categoryId");
 

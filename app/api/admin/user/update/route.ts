@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { checkIfadmin, checkIfLoggedIn, HttpError } from "@/lib/jwt";
+import { checkIfAdmin, checkIfLoggedIn, HttpError } from "@/lib/jwt";
 
 // /user/update
 // Updates own user
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
 
   try {
     const jwtPayload = checkIfLoggedIn(req);
-    if (!checkIfadmin(jwtPayload)) throw new HttpError(401, "Unauthorized");
+    if (!checkIfAdmin(jwtPayload)) throw new HttpError(401, "Unauthorized");
 
     // update any user
     const response = await prisma.users.update({
