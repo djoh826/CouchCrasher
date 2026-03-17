@@ -12,6 +12,8 @@ export async function GET(req: Request) {
     // const jwtPayload = checkIfLoggedIn(req);
     // if (!checkIfAdmin(jwtPayload)) throw new HttpError(401, "Unauthorized");
 
+    console.log("DBURL = " + process.env.DATABASE_URL);
+
     console.log("Clearing existing data…");
 
     await prisma.users.deleteMany();
