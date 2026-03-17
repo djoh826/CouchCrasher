@@ -20,8 +20,6 @@ export async function GET(req: Request) {
   } catch (err) {
     if (err instanceof HttpError) {
       return NextResponse.json({ error: err.message }, { status: err.status });
-    } else {
-      return "Unexpected error occurred";
     }
   }
 
