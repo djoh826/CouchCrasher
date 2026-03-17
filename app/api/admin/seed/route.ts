@@ -9,8 +9,8 @@ const prisma = new PrismaClient();
 // This resets the db for dev use
 export async function GET(req: Request) {
   try {
-    const jwtPayload = checkIfLoggedIn(req);
-    if (!checkIfAdmin(jwtPayload)) throw new HttpError(401, "Unauthorized");
+    // const jwtPayload = checkIfLoggedIn(req);
+    // if (!checkIfAdmin(jwtPayload)) throw new HttpError(401, "Unauthorized");
 
     console.log("Clearing existing data…");
 
