@@ -24,6 +24,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: err.message }, { status: err.status });
     }
 
+    console.error(err);
+
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },
@@ -51,8 +53,13 @@ export async function DELETE(req: Request) {
   } catch (err) {
     if (err instanceof HttpError) {
       return NextResponse.json({ error: err.message }, { status: err.status });
-    } else {
-      return NextResponse.error();
     }
+
+    console.error(err);
+
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
   }
 }
