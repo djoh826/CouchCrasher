@@ -79,8 +79,8 @@ export async function POST(req: Request) {
     const lockTimeout = 5000;
 
     const lockAcquired = await redis.set(lockKey, "locked", {
-      NX: true,
-      PX: lockTimeout,
+      nx: true,
+      px: lockTimeout,
     });
 
     if (lockAcquired !== "OK") {

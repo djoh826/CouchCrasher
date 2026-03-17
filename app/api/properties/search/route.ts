@@ -18,8 +18,8 @@ export async function GET(req: Request) {
     // check redis cache first
     const cached = await redis.get(cacheKey);
 
-    if (cached) {
-      return NextResponse.json(JSON.parse(cached));
+    if (cached !== null) {
+      return NextResponse.json(cached);
     }
 
     // query database if cache miss
@@ -36,7 +36,7 @@ export async function GET(req: Request) {
 
     // store results in redis for 60 seconds
     await redis.set(cacheKey, JSON.stringify(properties), {
-      EX: 60,
+      ex: 60,
     });
 
     return NextResponse.json(properties);
