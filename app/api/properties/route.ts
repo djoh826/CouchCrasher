@@ -12,6 +12,7 @@ export async function GET() {
         street: true,
         city: true,
         state: true,
+        nightlyfee: true,
       },
     });
     return NextResponse.json(response);
