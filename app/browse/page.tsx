@@ -17,6 +17,7 @@ export default function Browse() {
         setProperties(data);
       } catch (err) {
         setError("Failed to load properties.");
+        console.error(err);
       } finally {
         setLoading(false);
       }
