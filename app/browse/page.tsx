@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { getProperties } from "@/lib/apiEndpoints";
 import { Property } from "@/types";
+import Image from "next/image";
 
 export default function Browse() {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -43,6 +44,14 @@ export default function Browse() {
                 {property.city}, {property.state}
               </p>
               <p>${property.nightlyfee} / night</p>
+              <Image
+                width={"50"}
+                height={"50"}
+                alt={"Property photo of " + property.name}
+                src={
+                  "https://" + String(property.propertyphotos?.[0].thumbnailurl)
+                }
+              />
             </div>
           ))}
       </div>

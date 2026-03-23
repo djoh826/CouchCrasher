@@ -1,9 +1,3 @@
-// {
-//   propertyId: string,
-//   fileKey: string, // path of original in S3
-//   isPrimary?: boolean
-// }
-
 // /app/api/uploads/process/route.ts
 
 import { NextResponse } from "next/server";
@@ -11,7 +5,7 @@ import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { s3 } from "@/lib/s3";
 import { processImage } from "@/lib/imageProcessor";
 import { v4 as uuidv4 } from "uuid";
-import { prisma } from "@/lib/prisma"; // adjust if needed
+import { prisma } from "@/lib/prisma";
 import { checkIfLoggedIn, checkIfHostOfProperty } from "@/lib/jwt";
 import { Readable } from "stream";
 
@@ -22,95 +16,108 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { propertyId, fileKey } = await req.json();
+    const photos: {
+      propertyId: string;
+      fileKey: string;
+      isPrimary?: boolean;
+      order?: number;
+    }[] = await req.json();
 
-    if (!propertyId || !fileKey) {
-      return NextResponse.json({ error: "Missing data" }, { status: 400 });
-    }
-
-    // check if user is host of property
-    const isHostOfProperty = await checkIfHostOfProperty(user, propertyId);
-    if (!isHostOfProperty) {
+    if (!Array.isArray(photos) || photos.length === 0) {
       return NextResponse.json(
-        { error: "User is not owner of this property" },
+        { error: "Missing or invalid data" },
         { status: 400 },
       );
     }
 
-    // download original from S3
-    const getObject = await s3.send(
-      new GetObjectCommand({
-        Bucket: process.env.S3_BUCKET_NAME!,
-        Key: fileKey,
-      }),
-    );
+    const dbEntries = [];
 
-    // ensure body exists
-    if (!getObject.Body) {
+    for (const photo of photos) {
+      const { propertyId, fileKey, isPrimary, order } = photo;
+
+      if (!propertyId || !fileKey) continue;
+
+      // check if user is host of property
+      const isHostOfProperty = await checkIfHostOfProperty(
+        user,
+        Number(propertyId),
+      );
+      if (!isHostOfProperty) continue;
+
+      // download original from S3
+      const getObject = await s3.send(
+        new GetObjectCommand({
+          Bucket: process.env.S3_BUCKET_NAME!,
+          Key: fileKey,
+        }),
+      );
+
+      if (!getObject.Body) continue;
+
+      const stream = getObject.Body as Readable;
+      const chunks: Buffer[] = [];
+
+      for await (const chunk of stream) {
+        chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+      }
+
+      const originalBuffer = Buffer.concat(chunks);
+
+      // process image
+      const { optimizedBuffer, thumbnailBuffer } =
+        await processImage(originalBuffer);
+
+      // generate filenames
+      const uuid = uuidv4();
+      const optimizedKey = `properties/${propertyId}/optimized/${uuid}.webp`;
+      const thumbKey = `properties/${propertyId}/thumb/${uuid}.webp`;
+
+      // upload optimized
+      await s3.send(
+        new PutObjectCommand({
+          Bucket: process.env.S3_BUCKET_NAME!,
+          Key: optimizedKey,
+          Body: optimizedBuffer,
+          ContentType: "image/webp",
+          CacheControl: "public, max-age=31536000, immutable",
+        }),
+      );
+
+      // upload thumbnail
+      await s3.send(
+        new PutObjectCommand({
+          Bucket: process.env.S3_BUCKET_NAME!,
+          Key: thumbKey,
+          Body: thumbnailBuffer,
+          ContentType: "image/webp",
+          CacheControl: "public, max-age=31536000, immutable",
+        }),
+      );
+
+      const cdn = process.env.CLOUDFRONT_URL;
+      dbEntries.push({
+        propertyid: Number(propertyId),
+        photourl: `${cdn}/${optimizedKey}`,
+        thumbnailurl: `${cdn}/${thumbKey}`,
+        isprimary: isPrimary ?? false,
+        order: order ?? 1,
+      });
+    }
+
+    if (dbEntries.length === 0) {
       return NextResponse.json(
-        { error: "Failed to download image" },
-        { status: 500 },
+        { error: "No valid images to process" },
+        { status: 400 },
       );
     }
 
-    const stream = getObject.Body as Readable;
-
-    const chunks: Buffer[] = [];
-
-    // convert stream to buffer
-    for await (const chunk of stream) {
-      chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
-    }
-
-    const originalBuffer = Buffer.concat(chunks);
-
-    // process image
-    const { optimizedBuffer, thumbnailBuffer } =
-      await processImage(originalBuffer);
-
-    // generate filenames
-    const uuid = uuidv4();
-    const optimizedKey = `properties/${propertyId}/optimized/${uuid}.webp`;
-    const thumbKey = `properties/${propertyId}/thumb/${uuid}.webp`;
-
-    // upload optimized
-    await s3.send(
-      new PutObjectCommand({
-        Bucket: process.env.S3_BUCKET_NAME!,
-        Key: optimizedKey,
-        Body: optimizedBuffer,
-        ContentType: "image/webp",
-        CacheControl: "public, max-age=31536000, immutable",
-      }),
-    );
-
-    // upload thumbnail
-    await s3.send(
-      new PutObjectCommand({
-        Bucket: process.env.S3_BUCKET_NAME!,
-        Key: thumbKey,
-        Body: thumbnailBuffer,
-        ContentType: "image/webp",
-        CacheControl: "public, max-age=31536000, immutable",
-      }),
-    );
-
-    // build CloudFront URLs
-    const cdn = process.env.CLOUDFRONT_URL;
-    const optimizedUrl = `${cdn}/${optimizedKey}`;
-    const thumbnailUrl = `${cdn}/${thumbKey}`;
-
-    // save to DB
-    await prisma.propertyphotos.create({
-      data: {
-        propertyid: propertyId,
-        photourl: optimizedUrl,
-        // thumbnailurl, TODO: add this column to db
-        // isPrimary: isPrimary ?? false,
-      },
+    // save all at once
+    await prisma.propertyphotos.createMany({
+      data: dbEntries,
+      skipDuplicates: true, // optional
     });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, processed: dbEntries.length });
   } catch (error) {
     console.error(error);
     return NextResponse.json(

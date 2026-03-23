@@ -13,6 +13,11 @@ export async function GET() {
         city: true,
         state: true,
         nightlyfee: true,
+        propertyphotos: {
+          select: {
+            thumbnailurl: true,
+          },
+        },
       },
     });
     return NextResponse.json(response);

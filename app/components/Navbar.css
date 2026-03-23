@@ -1,0 +1,16 @@
+.primary-nav {
+  background-color: var(--secondary);
+  border-radius: 0.5rem;
+}
+
+.nav-list li > :first-child {
+  color: white;
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.nav-list {
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem 10vw;
+}

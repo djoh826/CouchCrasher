@@ -41,7 +41,6 @@ export async function POST(req: Request) {
 
     const property = await prisma.property.create({
       data: {
-        pid: Math.floor(Date.now() / 1000),
         name,
         maxguests,
         numbedrooms,

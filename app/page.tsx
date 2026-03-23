@@ -3,21 +3,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { getProperties } from "@/lib/apiEndpoints";
 import { Property } from "@/types";
+import BookingForm from "./components/BookingForm";
 
 export default function Home() {
-  const [location, setLocation] = useState("");
-  const [properties, setProperties] = useState<Property[]>([]);
-
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const results = await getProperties(); // optionally filter by location
-      setProperties(results);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   return (
     <div className="layout">
       <main className="main-content">
@@ -28,21 +16,7 @@ export default function Home() {
           </Link>
         </section>
 
-        <section className="search-box" aria-label="Search stays">
-          <form className="search-form" onSubmit={handleSearch}>
-            <div className="input-group">
-              <label htmlFor="location">Where do you want to stay?</label>
-              <input
-                id="location"
-                type="text"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-              />
-            </div>
-
-            <button type="submit">Search</button>
-          </form>
-        </section>
+        <BookingForm />
 
         {/* <section className="search-results">
           {properties.map((p) => (

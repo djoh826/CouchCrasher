@@ -78,6 +78,9 @@ export interface PropertyPhoto {
   photoid: number;
   propertyid: number;
   photourl: string;
+  thumbnailurl: string;
+  isprimary: boolean;
+  order: number;
 }
 
 export interface Category {
