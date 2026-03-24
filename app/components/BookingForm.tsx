@@ -23,35 +23,43 @@ export default function BookingForm() {
     <section className="booking-form" aria-label="Search stays">
       <form className="search-form" onSubmit={handleSearch}>
         <div className="input-group">
-          <label htmlFor="location">Where do you want to stay?</label>
-          <input
-            id="location"
-            type="text"
-            value={location}
-            placeholder="Dallas"
-            onChange={(e) => setLocation(e.target.value)}
-          />
-          <label htmlFor="date">When?</label>
-          <input
-            id="date"
-            type="text"
-            value={date}
-            placeholder="03/22/2026"
-            onChange={(e) => setDate(e.target.value)}
-          />
-          <label htmlFor="guests">How many guests?</label>
-          <input
-            id="guests"
-            type="number"
-            value={guests}
-            placeholder="Dallas"
-            onChange={(e) => setGuests(e.target.value)}
-          />
-        </div>
+          <div className="field">
+            <label htmlFor="location">Where do you want to stay?</label>
+            <input
+              id="location"
+              type="text"
+              value={location}
+              placeholder="Dallas"
+              onChange={(e) => setLocation(e.target.value)}
+            />
+          </div>
 
-        <button type="submit" className="search">
-          Search
-        </button>
+          <div className="field">
+            <label htmlFor="date">When do you want to stay?</label>
+            <input
+              id="date"
+              type="text"
+              value={date}
+              placeholder="03/22/2026"
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
+
+          <div className="field">
+            <label htmlFor="guests">How many guests?</label>
+            <input
+              id="guests"
+              type="number"
+              value={guests}
+              placeholder="2"
+              onChange={(e) => setGuests(e.target.value)}
+            />
+          </div>
+
+          <button type="submit" className="search">
+            🔍
+          </button>
+        </div>
       </form>
     </section>
   );
