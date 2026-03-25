@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "./Footer.css";
 
 export default function Footer() {
   const footerLinks = [
@@ -37,10 +38,12 @@ export default function Footer() {
   return (
     <section className="footer">
       {footerLinks.map((section) => (
-        <div key={section.title}>
+        <div className="columns" key={section.title}>
           <h3>
             {section.href ? (
-              <Link href={section.href}>{section.title}</Link>
+              <Link className="header-links" href={section.href}>
+                {section.title}
+              </Link>
             ) : (
               section.title
             )}
@@ -48,6 +51,7 @@ export default function Footer() {
 
           {section.links?.map((link) => (
             <Link
+              className="links"
               key={link.label}
               href={section.href ? `${section.href}${link.href}` : link.href}
             >

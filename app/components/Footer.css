@@ -1,0 +1,25 @@
+.footer {
+  background-color: var(--accent);
+  display: flex;
+  justify-content: space-around;
+  padding: 3rem 1rem;
+}
+
+h3,
+.links,
+.header-links {
+  color: var(--background);
+}
+
+.columns {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+h3 {
+  margin-bottom: 0.5rem;
+}
+
+.links {
+}

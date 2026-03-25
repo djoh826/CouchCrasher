@@ -1,22 +1,28 @@
 :root[data-theme="light"] {
-  --text: #120623;
-  --background: #f2eefc;
-  --primary: #682fda;
-  --secondary: #ec93d0;
-  --accent: #e36392;
+  --text: #07051a;
+  --background: #fafafe;
+  --primary: #5634db;
+  --secondary: #b885e9;
+  --accent: #c163e3;
+}
+:root[data-theme="dark"] {
+  --text: #e7e5fa;
+  --background: #010104;
+  --primary: #4624cc;
+  --secondary: #491679;
+  --accent: #7a1c9c;
 }
 
-:root[data-theme="dark"] {
-  --text: #e8dcf9;
-  --background: #070311;
-  --primary: #5e25d0;
-  --secondary: #6c1350;
-  --accent: #9c1c4b;
+* {
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
 }
 
 body {
   color: var(--text);
   background-color: var(--background);
+  padding: 0;
+  margin: 0;
 }
 
 ul {
@@ -25,6 +31,7 @@ ul {
 
 a {
   text-decoration: none;
+  color: var(--accent);
 }
 
 a:hover {
@@ -36,7 +43,7 @@ a:active {
 }
 
 h1 {
-  color: var(--primary);
+  color: var(--text);
 }
 
 h2 {

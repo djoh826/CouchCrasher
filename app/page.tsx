@@ -1,9 +1,7 @@
 "use client";
-import { useState } from "react";
 import Link from "next/link";
-import { getProperties } from "@/lib/apiEndpoints";
-import { Property } from "@/types";
 import BookingForm from "./components/BookingForm";
+import "./page.css";
 
 export default function Home() {
   return (
