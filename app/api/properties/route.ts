@@ -16,6 +16,7 @@ export async function GET() {
         propertyphotos: {
           select: {
             thumbnailurl: true,
+            photourl: true,
           },
         },
       },
