@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import PropertyGrid from "@/app/components/PropertyGrid";
 import { Property } from "@/types";
 import { getProperties } from "@/lib/apiEndpoints";
+import styles from "./page.module.css";
 
 export default function Browse() {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -26,8 +27,8 @@ export default function Browse() {
   }, []);
 
   return (
-    <section className="browse">
-      <div className="results">
+    <section className={styles.browse}>
+      <div className={styles.resultsWrapper}>
         {loading && <p>Loading properties...</p>}
         {error && <p>{error}</p>}
         {!loading && !error && <PropertyGrid properties={properties} />}
