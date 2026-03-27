@@ -13,6 +13,9 @@ export async function GET() {
         city: true,
         state: true,
         nightlyfee: true,
+        maxguests: true,
+        numbedrooms: true,
+        numbathrooms: true,
         propertyphotos: {
           select: {
             thumbnailurl: true,

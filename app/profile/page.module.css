@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 1rem;
+  min-height: 80vh;
+  background: linear-gradient(135deg, #eef2f7, #dfe6ef);
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+.profileCard {
+  background: #fff;
+  padding: 2rem 2.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.profileCard h2 {
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  color: var(--primary, #6b8cff);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.profileCard p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  color: #444;
+}
+
+.logoutButton {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #6b8cff;
+  color: #fff;
+  border: none;
+  border-radius: 0.6rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.logoutButton:hover {
+  filter: brightness(0.95);
+  transform: translateY(-1px);
+}
+
+.logoutButton:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 500px) {
+  .profileCard {
+    padding: 1.5rem;
+  }
+}
