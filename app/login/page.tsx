@@ -2,9 +2,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
+import styles from "./page.module.css";
 
 export default function Login() {
-  //TODO: Refactor below
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
@@ -19,27 +19,17 @@ export default function Login() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: loginEmail, password: loginPassword }),
       });
-
       const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || "Login failed");
-        return;
-      }
-
+      if (!res.ok) return setError(data.error || "Login failed");
       login({ uid: data.uid, email: loginEmail });
-
-      // Redirect to home page after login
       router.push("/");
-    } catch (err) {
-      console.error(err);
+    } catch {
       setError("Something went wrong");
     }
   };
@@ -47,7 +37,6 @@ export default function Login() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-
     try {
       const res = await fetch("/api/auth/register", {
         method: "POST",
@@ -57,115 +46,112 @@ export default function Login() {
           password: registerPassword,
         }),
       });
-
       const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || "Login failed");
-        return;
-      }
-
-      // const token = data.token;
-
-      // Redirect to home page and refresh (to load new jwt cookie) after login
+      if (!res.ok) return setError(data.error || "Register failed");
       router.push("/");
-    } catch (err) {
-      console.error(err);
+    } catch {
       setError("Something went wrong");
     }
   };
 
   return (
-    <div className="layout">
-      {/* <Navbar /> */}
-      <main>
-        <div className="background">
-          <section className="login-bubble">
-            <div className="title">
-              <h3>Log in or Sign up</h3>
-            </div>
-            <div className="flexbox">
-              <div className="login">
-                <h3>Already have an account? Log in</h3>
-                <form className="login" onSubmit={handleLogin}>
-                  <label className="email-label">
-                    Email
-                    <input
-                      type="text"
-                      value={loginEmail}
-                      onChange={(e) => setLoginEmail(e.target.value)}
-                      className="email-input"
-                    ></input>
-                  </label>
-                  <label className="password-label">
-                    Password
-                    <input
-                      type="password"
-                      value={loginPassword}
-                      onChange={(e) => setLoginPassword(e.target.value)}
-                      className="password-input"
-                    ></input>
-                  </label>
-                  <button type="submit">Log in</button>
-                </form>
-              </div>
-              <div className="register">
-                <h3>Don&apos;t have an account? Register</h3>
-                <form className="register" onSubmit={handleRegister}>
-                  <label className="email-label">
-                    Email
-                    <input
-                      type="text"
-                      value={registerEmail}
-                      onChange={(e) => setRegisterEmail(e.target.value)}
-                      className="email-input"
-                    ></input>
-                  </label>
-                  <label className="password-label">
-                    Password
-                    <input
-                      type="password"
-                      value={registerPassword}
-                      onChange={(e) => setRegisterPassword(e.target.value)}
-                      className="password-input"
-                    ></input>
-                  </label>
-                  <label className="name-label">
-                    Full Name
-                    <input
-                      value={registerName}
-                      onChange={(e) => setRegisterName(e.target.value)}
-                      className="name-input"
-                      placeholder="John Smith"
-                    ></input>
-                  </label>
-                  <label className="phone-label">
-                    Phone
-                    <input
-                      value={registerPhone}
-                      onChange={(e) => setRegisterPhone(e.target.value)}
-                      className="phone-input"
-                      placeholder="1231231234"
-                    ></input>
-                  </label>
-                  <label className="dob-label">
-                    Date of Birth
-                    <input
-                      value={registerDOB}
-                      onChange={(e) => setRegisterDOB(e.target.value)}
-                      className="dob-input"
-                      placeholder="YYYY-MM-DD"
-                    ></input>
-                  </label>
-
-                  <button type="submit">Register</button>
-                </form>
-              </div>
-            </div>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-          </section>
+    <div className={styles.background}>
+      <section className={styles.loginBubble}>
+        <div className={styles.loginBubbleTitle}>
+          <h3>Log in or Sign up</h3>
         </div>
-      </main>
+
+        <div className={styles.flexbox}>
+          {/* Login */}
+          <div className={styles.column}>
+            <h3 className={styles.sectionTitle}>
+              Already have an account? Log in
+            </h3>
+            <form className={styles.form} onSubmit={handleLogin}>
+              <label className={styles.label}>
+                Email
+                <input
+                  type="text"
+                  value={loginEmail}
+                  onChange={(e) => setLoginEmail(e.target.value)}
+                  className={`${styles.input} ${styles.inputFocus}`}
+                />
+              </label>
+              <label className={styles.label}>
+                Password
+                <input
+                  type="password"
+                  value={loginPassword}
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                  className={`${styles.input} ${styles.inputFocus}`}
+                />
+              </label>
+              <button type="submit" className={styles.button}>
+                Log in
+              </button>
+            </form>
+          </div>
+
+          {/* Register */}
+          <div className={styles.column}>
+            <h3 className={styles.sectionTitle}>
+              Don&apos;t have an account? Register
+            </h3>
+            <form className={styles.form} onSubmit={handleRegister}>
+              <label className={styles.label}>
+                Email
+                <input
+                  type="text"
+                  value={registerEmail}
+                  onChange={(e) => setRegisterEmail(e.target.value)}
+                  className={`${styles.input} ${styles.inputFocus}`}
+                />
+              </label>
+              <label className={styles.label}>
+                Password
+                <input
+                  type="password"
+                  value={registerPassword}
+                  onChange={(e) => setRegisterPassword(e.target.value)}
+                  className={`${styles.input} ${styles.inputFocus}`}
+                />
+              </label>
+              <label className={styles.label}>
+                Full Name
+                <input
+                  value={registerName}
+                  onChange={(e) => setRegisterName(e.target.value)}
+                  className={`${styles.input} ${styles.inputFocus}`}
+                  placeholder="John Smith"
+                />
+              </label>
+              <label className={styles.label}>
+                Phone
+                <input
+                  value={registerPhone}
+                  onChange={(e) => setRegisterPhone(e.target.value)}
+                  className={`${styles.input} ${styles.inputFocus}`}
+                  placeholder="1231231234"
+                />
+              </label>
+              <label className={styles.label}>
+                Date of Birth
+                <input
+                  value={registerDOB}
+                  onChange={(e) => setRegisterDOB(e.target.value)}
+                  className={`${styles.input} ${styles.inputFocus}`}
+                  placeholder="YYYY-MM-DD"
+                />
+              </label>
+              <button type="submit" className={styles.button}>
+                Register
+              </button>
+            </form>
+          </div>
+        </div>
+
+        {error && <p className={styles.errorMessage}>{error}</p>}
+      </section>
     </div>
   );
 }
