@@ -20,7 +20,7 @@ export default function Footer() {
       links: [
         { label: "List Your Space", href: "#homes" },
         { label: "Share Experiences", href: "#experiences" },
-        { label: "Offter Extra Services", href: "#services" },
+        { label: "Offer Extra Services", href: "#services" },
         { label: "Hosting resources", href: "#resources" },
       ],
     },

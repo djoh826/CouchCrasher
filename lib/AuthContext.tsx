@@ -4,6 +4,7 @@ import { createContext, useContext, ReactNode, useState } from "react";
 export type User = {
   uid: number;
   email: string;
+  token: string;
 };
 
 type AuthContextType = {

@@ -4,6 +4,7 @@ h1 {
 }
 
 .hero {
+  margin-top: 1rem;
   padding-top: 0px;
   display: flex;
   flex-direction: column;
@@ -20,7 +21,7 @@ h1 {
 
 .host-cta {
   background-color: var(--primary);
-  margin: 1rem auto;
+  margin: 1.5rem auto 1.2rem;
   width: 50vw;
   padding: 2rem;
   border-radius: 1rem;

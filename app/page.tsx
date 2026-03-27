@@ -33,9 +33,9 @@ export default function Home() {
       <main className="main-content">
         <section className="hero">
           <h1>Live comfortably like at home, wherever you go</h1>
-          <Link href="/browse" className="cta-primary">
+          {/* <Link href="/browse" className="cta-primary">
             Book now
-          </Link>
+          </Link> */}
         </section>
 
         <BookingForm />
@@ -45,7 +45,7 @@ export default function Home() {
           {loading && <p>Loading properties...</p>}
           {error && <p>{error}</p>}
           {!loading && !error && (
-            <PropertyGrid properties={properties} limit={6} />
+            <PropertyGrid properties={properties} limit={4} />
           )}
         </section>
 
