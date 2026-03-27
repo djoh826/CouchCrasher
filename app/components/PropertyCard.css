@@ -38,6 +38,7 @@
   font-size: 1.15rem;
   font-weight: 600;
   margin: 0.25rem 0;
+  color: var(--text);
 }
 
 .property-location {

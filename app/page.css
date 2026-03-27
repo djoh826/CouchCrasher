@@ -46,3 +46,14 @@ h1 {
 .cta-secondary:hover {
   filter: brightness(0.9);
 }
+
+.featured-properties {
+  padding: 0 10vw;
+}
+
+.featured-properties h2 {
+  font-weight: bold;
+  font-size: 1.7rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.17);
+  margin-bottom: 1rem;
+}
