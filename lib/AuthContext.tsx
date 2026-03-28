@@ -1,30 +1,79 @@
 "use client";
-import { createContext, useContext, ReactNode, useState } from "react";
+import {
+  createContext,
+  useContext,
+  ReactNode,
+  useState,
+  useEffect,
+} from "react";
 
-export type User = {
+export type AuthUser = {
   uid: number;
   email: string;
-  token: string;
+  isadmin?: boolean;
 };
 
 type AuthContextType = {
-  user: User | null;
+  user: AuthUser | null;
   isLoggedIn: boolean;
-  login: (userData: User) => void;
-  logout: () => void;
+  loading: boolean;
+  login: (userData: AuthUser) => void;
+  logout: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const login = (userData: User) => setUser(userData);
-  const logout = () => setUser(null);
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const res = await fetch("/api/me", {
+          credentials: "include",
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data.user);
+        } else {
+          setUser(null);
+        }
+      } catch {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchUser();
+  }, []);
+
+  const login = (userData: AuthUser) => {
+    setUser(userData);
+  };
+
+  const logout = async () => {
+    try {
+      await fetch("/api/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch {}
+
+    setUser(null);
+  };
 
   return (
     <AuthContext.Provider
-      value={{ user, isLoggedIn: user ? true : false, login, logout }}
+      value={{
+        user,
+        isLoggedIn: !!user,
+        loading,
+        login,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

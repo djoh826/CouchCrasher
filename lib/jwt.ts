@@ -22,21 +22,26 @@ export function verifyJwt(token: string) {
   return jwt.verify(token, JWT_SECRET) as JwtPayload;
 }
 
-export function checkIfLoggedIn(req: Request) {
+export function checkIfLoggedIn(req: Request): JwtPayload {
+  // try auth header
   const authHeader = req.headers.get("Authorization");
-
-  if (!authHeader?.startsWith("Bearer ")) {
-    throw new HttpError(401, "Unauthorized");
+  if (authHeader?.startsWith("Bearer ")) {
+    const token = authHeader.split(" ")[1];
+    return verifyJwt(token);
   }
 
-  const token = authHeader.split(" ")[1];
-  const jwt = verifyJwt(token);
+  // try cookies
+  const cookieHeader = req.headers.get("cookie");
 
-  if (typeof jwt === "string") {
-    throw new HttpError(401, jwt);
+  if (cookieHeader) {
+    const match = cookieHeader.match(/auth_token=([^;]+)/);
+    if (match) {
+      const token = match[1];
+      return verifyJwt(token);
+    }
   }
 
-  return jwt;
+  throw new HttpError(401, "Unauthorized");
 }
 
 export async function checkIfAdmin(jwt: JwtPayload) {

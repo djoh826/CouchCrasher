@@ -12,14 +12,8 @@ export const getProperties = (): Promise<Property[]> => {
 };
 export const getPropertyById = (id: number) =>
   apiFetch<Property>(`/api/properties/${id}`);
-export const getUserProperties = (
-  token?: string,
-): Promise<UserPropertiesResponse> => {
-  return apiFetch<UserPropertiesResponse>(
-    "/api/properties/user-properties",
-    {},
-    token,
-  );
+export const getUserProperties = (): Promise<UserPropertiesResponse> => {
+  return apiFetch<UserPropertiesResponse>("/api/properties/user-properties");
 };
 export const createBooking = (data: {
   propertyId: number;

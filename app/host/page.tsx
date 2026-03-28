@@ -14,13 +14,11 @@ export default function Host() {
 
   useEffect(() => {
     const fetchUserProperties = async () => {
-      if (!user?.token) return; // dont fetch if no token
-
       setLoading(true);
       setError(null);
 
       try {
-        const data = await getUserProperties(user.token);
+        const data = await getUserProperties();
         setUserProperties(data);
       } catch (err) {
         console.error(err);
