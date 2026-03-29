@@ -1,3 +1,23 @@
-.results-row {
-  display: flex;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  box-shadow: 0 0 0 1px var(--text);
+}
+
+th,
+td {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+th {
+  background-color: var(--background);
+  filter: brightness(0.95);
+  font-weight: 600;
+}
+
+tr:hover {
+  background-color: var(--background);
+  filter: brightness(0.95);
 }

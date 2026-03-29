@@ -27,7 +27,7 @@ export default function Login() {
       });
       const data = await res.json();
       if (!res.ok) return setError(data.error || "Login failed");
-      login({ uid: data.uid, email: loginEmail, token: data.token });
+      login({ uid: data.uid, email: loginEmail });
       router.push("/");
     } catch {
       setError("Something went wrong");

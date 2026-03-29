@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import { getUserProperties, UserPropertiesResponse } from "@/lib/apiEndpoints";
 import UserPropertyForm from "@/app/components/UserPropertyForm";
 import { useAuth } from "@/lib/AuthContext";
+import Link from "next/link";
 
 export default function Host() {
   const { user } = useAuth();
@@ -37,8 +38,16 @@ export default function Host() {
         {loading && <p>Loading properties...</p>}
         {error && <p>{error}</p>}
         {!loading && !error && userProperties && (
-          <UserPropertyForm data={userProperties} />
+          <div className={styles.properties}>
+            <h1>Your Properties</h1>
+            <UserPropertyForm data={userProperties} />
+          </div>
         )}
+      </div>
+      <div className={styles.newListing}>
+        <Link href="/host/create" className={styles.button}>
+          Create a new property listing
+        </Link>
       </div>
     </section>
   );

@@ -14,10 +14,10 @@ export default function Navbar() {
             <Link href="/">Home</Link>
           </li>
           <li>
-            <Link href="/browse">Browse properties</Link>
+            <Link href="/browse">Browse Properties</Link>
           </li>
           <li>
-            <Link href="/host">Create a listing</Link>
+            <Link href="/host">My Listings</Link>
           </li>
           <li>
             {isLoggedIn ? (
