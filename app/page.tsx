@@ -41,12 +41,12 @@ export default function Home() {
         <BookingForm />
 
         <section className="featured-properties">
-          <h2>Featured Stays</h2>
-          {loading && <p>Loading properties...</p>}
-          {error && <p>{error}</p>}
-          {!loading && !error && (
-            <PropertyGrid properties={properties} limit={4} />
-          )}
+          <h2>Featured Properties</h2>
+          <div className="results-wrapper">
+            {!loading && !error && (
+              <PropertyGrid properties={properties} limit={5} />
+            )}
+          </div>
         </section>
 
         <section className="host-cta">
