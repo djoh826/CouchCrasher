@@ -35,10 +35,5 @@ export async function POST(req: Request) {
     path: "/",
   });
 
-  // Return token when not in prod so I can test api
-  // if (process.env.NODE_ENV !== "production") {
   return NextResponse.json({ success: true, token });
-  // }
-
-  // return NextResponse.json({ success: true });
 }

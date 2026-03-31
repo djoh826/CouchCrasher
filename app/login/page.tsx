@@ -25,9 +25,10 @@ export default function Login() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: loginEmail, password: loginPassword }),
       });
-      const data = await res.json();
-      if (!res.ok) return setError(data.error || "Login failed");
-      login({ uid: data.uid, email: loginEmail });
+      if (!res.ok) return setError("Login failed");
+      const meRes = await fetch("/api/me", { credentials: "include" });
+      const meData = await meRes.json();
+      login({ uid: meData.user.uid, email: meData.user.email });
       router.push("/");
     } catch {
       setError("Something went wrong");
@@ -48,6 +49,60 @@ export default function Login() {
       });
       const data = await res.json();
       if (!res.ok) return setError(data.error || "Register failed");
+      router.push("/");
+    } catch {
+      setError("Something went wrong");
+    }
+  };
+
+  const loginAsHost = async () => {
+    setError("");
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: "host@gmail.com", password: "host" }),
+      });
+      if (!res.ok) return setError("Login failed");
+      const meRes = await fetch("/api/me", { credentials: "include" });
+      const meData = await meRes.json();
+      login({ uid: meData.user.uid, email: meData.user.email });
+      router.push("/");
+    } catch {
+      setError("Something went wrong");
+    }
+  };
+
+  const loginAsGuest = async () => {
+    setError("");
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: "guest@gmail.com", password: "guest" }),
+      });
+      if (!res.ok) return setError("Login failed");
+      const meRes = await fetch("/api/me", { credentials: "include" });
+      const meData = await meRes.json();
+      login({ uid: meData.user.uid, email: meData.user.email });
+      router.push("/");
+    } catch {
+      setError("Something went wrong");
+    }
+  };
+
+  const loginAsAdmin = async () => {
+    setError("");
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: "admin@gmail.com", password: "admin" }),
+      });
+      if (!res.ok) return setError("Login failed");
+      const meRes = await fetch("/api/me", { credentials: "include" });
+      const meData = await meRes.json();
+      login({ uid: meData.user.uid, email: meData.user.email });
       router.push("/");
     } catch {
       setError("Something went wrong");
@@ -90,6 +145,27 @@ export default function Login() {
                 Log in
               </button>
             </form>
+            <button
+              type="submit"
+              className={styles.button}
+              onClick={loginAsHost}
+            >
+              Login as Host (dev)
+            </button>
+            <button
+              type="submit"
+              className={styles.button}
+              onClick={loginAsGuest}
+            >
+              Login as Guest (dev)
+            </button>
+            <button
+              type="submit"
+              className={styles.button}
+              onClick={loginAsAdmin}
+            >
+              Login as Admin (dev)
+            </button>
           </div>
 
           {/* Register */}
