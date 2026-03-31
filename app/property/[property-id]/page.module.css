@@ -1,0 +1,59 @@
+.propertyPage {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.propertyPage h1 {
+  font-size: 2rem;
+  margin: 16px 0 8px;
+}
+
+.propertyPage p {
+  font-size: 1rem;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.propertyPage ul {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.propertyPage ul li {
+  background: var(--background);
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 0.95rem;
+}
+
+.propertyPage strong {
+  color: #111;
+}
+
+.propertyPage img,
+.propertyPage .placeholder {
+  width: 100%;
+  max-height: 450px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  background-color: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #777;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.placeholder {
+  height: 300px;
+}
