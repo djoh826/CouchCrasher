@@ -14,6 +14,12 @@ export default function Host() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!user) {
+      setLoading(false);
+      setUserProperties(null);
+      return;
+    }
+
     const fetchUserProperties = async () => {
       setLoading(true);
       setError(null);
@@ -35,20 +41,33 @@ export default function Host() {
   return (
     <section className={styles.host}>
       <div className={styles.form}>
-        {loading && <p>Loading properties...</p>}
-        {error && <p>{error}</p>}
-        {!loading && !error && userProperties && (
+        {!user && (
+          <div>
+            <p>Log in to view or create property listings.</p>
+            <Link href="/login" className={styles.button}>
+              Log In
+            </Link>
+          </div>
+        )}
+
+        {user && loading && <p>Loading properties...</p>}
+        {user && error && <p>{error}</p>}
+
+        {user && !loading && !error && userProperties && (
           <div className={styles.properties}>
             <h1>Your Properties</h1>
             <UserPropertyForm data={userProperties} />
           </div>
         )}
       </div>
-      <div className={styles.newListing}>
-        <Link href="/host/create" className={styles.button}>
-          Create a new property listing
-        </Link>
-      </div>
+
+      {user && (
+        <div className={styles.newListing}>
+          <Link href="/host/create" className={styles.button}>
+            Create a new property listing
+          </Link>
+        </div>
+      )}
     </section>
   );
 }

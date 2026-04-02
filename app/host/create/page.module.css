@@ -1,5 +1,3 @@
-/* page.module.css */
-
 .hostCreate {
   max-width: 800px;
   margin: 2rem auto;
@@ -19,7 +17,7 @@
 
 .form {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* two columns for larger screens */
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 
