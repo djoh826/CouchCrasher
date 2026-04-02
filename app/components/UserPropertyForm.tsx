@@ -31,6 +31,7 @@ export default function UserPropertyForm({
                 <td>{prop.state}</td>
                 <td>
                   <Link href="/host/edit">Edit</Link>
+                  <Link href={"/property/" + prop.pid}> View</Link>
                 </td>
               </tr>
             ))}

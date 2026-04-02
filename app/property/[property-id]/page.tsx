@@ -118,10 +118,6 @@ export default function PropertyPage() {
           <strong>Address:</strong> {property.street}, {property.city},{" "}
           {property.state}, {property.zipcode}, {property.country}
         </li>
-        <li>
-          <strong>Coordinates:</strong> {property.latitude},{" "}
-          {property.longitude}
-        </li>
       </ul>
     </section>
   );

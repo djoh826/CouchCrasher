@@ -8,6 +8,7 @@ export async function GET() {
   try {
     const response = await prisma.property.findMany({
       select: {
+        pid: true,
         name: true,
         street: true,
         city: true,
