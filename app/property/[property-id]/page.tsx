@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import styles from "./page.module.css";
+import Link from "next/link";
 
 interface PropertyPhoto {
   photourl: string;
   isprimary: boolean;
+  order?: number; // photo order 1-5
 }
 
 interface Property {
@@ -65,40 +67,66 @@ export default function PropertyPage() {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
   if (!property) return <p>No property found.</p>;
 
-  const primaryPhoto =
-    property.propertyphotos?.find((p) => p.isprimary) ||
-    property.propertyphotos?.[0];
-  const photoUrl = primaryPhoto?.photourl
-    ? "https://" + primaryPhoto.photourl
-    : null;
+  const handleShare = () => {
+    // TODO: make this not just take the window's url
+    navigator.clipboard.writeText(window.location.href);
+    console.log("Share button clicked for:", property.name);
+  };
+
+  const handleFavorite = () => {
+    // TODO: implement favorite functionality
+    // POST /api/favorites { propertyId: property.id }
+    console.log("Favorite button clicked for:", property.name);
+  };
+
+  // Build the carousel images array (order 1-5)
+  const carouselImages: string[] = [];
+  for (let i = 1; i <= 5; i++) {
+    const photo = property.propertyphotos?.find((p) => p.order === i);
+    carouselImages.push(
+      photo?.photourl ? "https://" + photo.photourl : "/placeholder.png", // fallback
+    );
+  }
 
   return (
     <section className={styles.propertyPage}>
-      {photoUrl ? (
-        <Image
-          src={photoUrl}
-          alt={property.name}
-          width={800}
-          height={400}
-          style={{ objectFit: "cover", borderRadius: "16px" }}
-        />
-      ) : (
-        <div className={styles.placeholder}>No image available</div>
-      )}
+      <span className={styles.heading}>
+        <h1 className={styles.title}>
+          <span style={{ fontWeight: "bold" }}>{property.name}</span> -{" "}
+          {property.description}
+        </h1>
+        <p style={{ marginLeft: "auto" }}>
+          🔗 <button onClick={handleShare}>Share </button> ❤️{" "}
+          <button onClick={handleFavorite}>Favorite</button>
+        </p>
+      </span>
 
-      <h1>{property.name}</h1>
-      <p>{property.description}</p>
+      <div className={styles.photoCarousel}>
+        {carouselImages.map((url, idx) => (
+          <Image
+            key={idx}
+            className={styles[`item${idx + 1}`]}
+            src={url}
+            alt={`Photo ${idx + 1} of ${property.name}`}
+            width={400}
+            height={300}
+            style={{
+              objectFit: "cover",
+              borderRadius: "12px",
+            }}
+          />
+        ))}
+      </div>
+
+      <section className={styles.propertyDescription}>
+        <p style={{ color: "var(--text)", marginBottom: "0" }}>
+          Stay in {property.city}, {property.state} with up to{" "}
+          {property.maxguests} Guests, {property.numbedrooms} Bedrooms, and{" "}
+          {property.numbathrooms} Bathrooms
+        </p>
+      </section>
 
       <ul>
-        <li>
-          <strong>Guests:</strong> {property.maxguests}
-        </li>
-        <li>
-          <strong>Bedrooms:</strong> {property.numbedrooms}
-        </li>
-        <li>
-          <strong>Bathrooms:</strong> {property.numbathrooms}
-        </li>
         <li>
           <strong>Cancellation Period:</strong> {property.cancelperiod}
         </li>

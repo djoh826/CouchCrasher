@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { HttpError, checkIfLoggedIn } from "@/lib/jwt";
+import { HttpError } from "@/lib/jwt";
 
 interface PropertyParams {
   "property-id": string;
@@ -10,8 +10,6 @@ interface PropertyParams {
 // Gets property by id
 export async function GET(req: Request, context: { params: PropertyParams }) {
   try {
-    checkIfLoggedIn(req);
-
     const params = await context.params;
     const propertyId = params["property-id"];
     if (!propertyId) {
