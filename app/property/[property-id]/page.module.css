@@ -71,10 +71,45 @@
 }
 
 .propertyPage .propertyDescription {
+  display: flex;
 }
 
 .propertyPage .propertyDescription h1 {
   margin: 0.5rem 0 0;
+}
+
+.propertyPage .propertyDescription .leftHalf {
+  width: 50%;
+}
+
+.propertyPage .propertyDescription .rightHalf {
+  width: 50%;
+}
+
+.propertyPage .propertyDescription .rightHalf .book {
+  background-color: var(--background);
+  border: 1px solid var(--primary);
+  border-radius: 2px;
+  margin: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.book p {
+  font-size: 1.25rem;
+}
+
+.book button {
+  all: unset;
+  background-color: var(--primary);
+  color: var(--background);
+  padding: 0.35rem 0.7rem;
+  border-radius: 0.25rem;
+  margin: 1rem;
+  font-weight: bold;
+  font-size: 1.25rem;
 }
 
 .propertyPage ul {

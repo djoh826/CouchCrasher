@@ -101,7 +101,7 @@ model property {
   hostuid            Int
   maxguests          Int
   numbedrooms        Int
-  description        String               @db.VarChar(100)
+  description        String
   numbathrooms       Int
   cancelperiod       String               @db.VarChar(20)
   refundrate         Float
@@ -117,6 +117,7 @@ model property {
   country            String               @db.VarChar(50)
   latitude           Float                @default(0.0)
   longitude          Float                @default(0.0)
+  headline           String?
   booking            booking[]
   host               host                 @relation(fields: [hostuid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "propertyfk1")
   propertycategories propertycategories[]

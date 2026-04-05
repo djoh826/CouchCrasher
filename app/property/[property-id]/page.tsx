@@ -31,6 +31,7 @@ interface Property {
   country: string;
   latitude: number;
   longitude: number;
+  headline: string;
   propertyphotos?: PropertyPhoto[];
 }
 
@@ -93,7 +94,7 @@ export default function PropertyPage() {
       <span className={styles.heading}>
         <h1 className={styles.title}>
           <span style={{ fontWeight: "bold" }}>{property.name}</span> -{" "}
-          {property.description}
+          {property.headline}
         </h1>
         <p style={{ marginLeft: "auto" }}>
           🔗 <button onClick={handleShare}>Share </button> ❤️{" "}
@@ -119,11 +120,25 @@ export default function PropertyPage() {
       </div>
 
       <section className={styles.propertyDescription}>
-        <p style={{ color: "var(--text)", marginBottom: "0" }}>
-          Stay in {property.city}, {property.state} with up to{" "}
-          {property.maxguests} Guests, {property.numbedrooms} Bedrooms, and{" "}
-          {property.numbathrooms} Bathrooms
-        </p>
+        <div className={styles.leftHalf}>
+          <p style={{ color: "var(--text)", marginBottom: "0" }}>
+            <em>
+              Stay in {property.city}, {property.state} with up to{" "}
+              {property.maxguests} Guests, {property.numbedrooms} Bedrooms, and{" "}
+              {property.numbathrooms} Bathrooms
+            </em>
+          </p>
+          <p>{property.description}</p>
+        </div>
+        <div className={styles.rightHalf}>
+          <div className={styles.book}>
+            <p>$123 for 2 nights</p>
+            {/* dates here */}
+            {/* guests here */}
+            {/* TODO: Calendar widget thing here */}
+            <button>Book Now</button>
+          </div>
+        </div>
       </section>
 
       <ul>
@@ -147,6 +162,10 @@ export default function PropertyPage() {
           {property.state}, {property.zipcode}, {property.country}
         </li>
       </ul>
+
+      {/* reviews here */}
+
+      {/* host info here */}
     </section>
   );
 }
