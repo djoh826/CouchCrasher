@@ -5,6 +5,8 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import styles from "./page.module.css";
 import Link from "next/link";
+import DatePicker from "react-date-picker";
+import BookingCalendar from "@/app/components/BookingCalendar";
 
 interface PropertyPhoto {
   photourl: string;
@@ -136,6 +138,8 @@ export default function PropertyPage() {
             {/* dates here */}
             {/* guests here */}
             {/* TODO: Calendar widget thing here */}
+            <BookingCalendar propertyId={Number(propertyId)} />
+            {/* <input type="date" /> */}
             <button>Book Now</button>
           </div>
         </div>

@@ -14,11 +14,14 @@
     "@prisma/client": "^6.19.2",
     "@upstash/redis": "^1.37.0",
     "bcrypt": "^6.0.0",
+    "flatpickr": "^4.6.13",
     "jsonwebtoken": "^9.0.3",
     "next": "16.1.4",
     "prisma": "^6.19.2",
     "react": "19.2.3",
+    "react-date-picker": "^12.0.2",
     "react-dom": "19.2.3",
+    "react-flatpickr": "^4.0.11",
     "redis": "^5.11.0",
     "sharp": "^0.34.5",
     "uuid": "^13.0.0"
@@ -26,6 +29,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/bcrypt": "^6.0.0",
+    "@types/flatpickr": "^3.0.2",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20",
     "@types/react": "^19",

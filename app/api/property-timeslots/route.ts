@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { HttpError } from "@/lib/jwt";
 
+// /api/property-timeslots GET
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
