@@ -1,5 +1,6 @@
 .propertyPage {
-  max-width: 900px;
+  min-width: 900px;
+  max-width: 1050px;
   margin: 0 auto;
   padding: 24px;
   font-family: Arial, sans-serif;
@@ -32,6 +33,7 @@
 
 .propertyPage .photoCarousel {
   max-width: 1120px;
+  max-height: 650px;
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;

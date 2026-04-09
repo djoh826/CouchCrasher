@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import Flatpickr from "react-flatpickr";
-import "flatpickr/dist/flatpickr.min.css"; // ✅ Import here
+import "flatpickr/dist/flatpickr.min.css";
+import "./BookingCalendar.css";
 
 type TimeSlot = {
   startdate: string;
@@ -77,7 +78,7 @@ export default function BookingCalendar({ propertyId }: BookingCalendarProps) {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="booking-container">
       <Flatpickr
         value={dateRange}
         options={{
@@ -87,13 +88,14 @@ export default function BookingCalendar({ propertyId }: BookingCalendarProps) {
           disable: disabledRanges,
         }}
         onChange={(dates: Date[]) => setDateRange(dates)}
-        className="border p-2 rounded-md w-full"
+        className="booking-input"
+        placeholder="When do you want to stay?"
       />
 
       <button
         onClick={handleBooking}
         disabled={loading}
-        className="bg-blue-600 text-white p-2 rounded-md disabled:opacity-50"
+        className="booking-button"
       >
         {loading ? "Booking..." : "Book Now"}
       </button>

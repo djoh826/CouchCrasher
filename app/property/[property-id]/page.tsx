@@ -137,9 +137,7 @@ export default function PropertyPage() {
             <p>$123 for 2 nights</p>
             {/* dates here */}
             {/* guests here */}
-            {/* TODO: Calendar widget thing here */}
             <BookingCalendar propertyId={Number(propertyId)} />
-            {/* <input type="date" /> */}
             <button>Book Now</button>
           </div>
         </div>
