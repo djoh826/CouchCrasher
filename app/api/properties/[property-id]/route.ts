@@ -1,14 +1,15 @@
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { HttpError } from "@/lib/jwt";
 
 // GET /api/properties/[property-id]
 // Gets property by id
 export async function GET(
-  req: Request,
-  { params }: { params: { "property-id": string } },
+  req: NextRequest,
+  context: { params: Promise<{ "property-id": string }> },
 ) {
   try {
+    const params = await context.params;
     const propertyId = params["property-id"];
 
     if (!propertyId) {
