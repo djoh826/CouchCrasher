@@ -130,6 +130,7 @@ export default function PropertyPage() {
               {property.numbathrooms} Bathrooms
             </em>
           </p>
+          <hr></hr>
           <p>{property.description}</p>
         </div>
         <div className={styles.rightHalf}>
@@ -138,10 +139,10 @@ export default function PropertyPage() {
             {/* dates here */}
             {/* guests here */}
             <BookingCalendar propertyId={Number(propertyId)} />
-            <button>Book Now</button>
           </div>
         </div>
       </section>
+      <hr />
 
       <ul>
         <li>

@@ -48,10 +48,6 @@ h1 {
   filter: brightness(0.9);
 }
 
-.featured-properties {
-  padding: 0 10vw;
-}
-
 .featured-properties h2 {
   font-weight: bold;
   font-size: 1.7rem;
