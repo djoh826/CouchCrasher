@@ -2,16 +2,15 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { HttpError } from "@/lib/jwt";
 
-interface PropertyParams {
-  "property-id": string;
-}
-
 // GET /api/properties/[property-id]
 // Gets property by id
-export async function GET(req: Request, context: { params: PropertyParams }) {
+export async function GET(
+  req: Request,
+  { params }: { params: { "property-id": string } },
+) {
   try {
-    const params = await context.params;
     const propertyId = params["property-id"];
+
     if (!propertyId) {
       return NextResponse.json(
         { error: "Property ID not provided" },
@@ -44,6 +43,7 @@ export async function GET(req: Request, context: { params: PropertyParams }) {
     if (err instanceof HttpError) {
       return NextResponse.json({ error: err.message }, { status: err.status });
     }
+
     console.error(err);
     return NextResponse.json(
       { error: "Internal Server Error" },
