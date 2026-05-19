@@ -98,15 +98,16 @@ export interface Booking {
   bid: number;
   guestuid: number;
   propertyid: number;
-  checkin?: string; // ISO date
-  checkout?: string; // ISO date
-  numguest?: number;
-  totalprice?: number;
-  nightsstayed?: number;
-  promotioncode?: string;
-  tax?: number;
-  cancellationdate?: string;
-  refundedamount?: number;
+  checkin: Date;
+  checkout: Date;
+
+  numguest?: number | null;
+  totalprice?: number | null;
+  nightsstayed?: number | null;
+  promotioncode?: string | null;
+  tax?: number | null;
+  cancellationdate?: Date | null;
+  refundedamount?: number | null;
 }
 
 export interface GuestPastBooking {

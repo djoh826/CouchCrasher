@@ -17,8 +17,8 @@ model booking {
   bid               Int                 @id
   guestuid          Int
   propertyid        Int
-  checkin           DateTime?           @db.Date
-  checkout          DateTime?           @db.Date
+  checkin           DateTime            @db.Date
+  checkout          DateTime            @db.Date
   numguest          Int?
   totalprice        Float?
   nightsstayed      Int?

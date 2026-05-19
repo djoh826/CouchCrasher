@@ -26,14 +26,14 @@ export async function POST(req: Request) {
     email: dbUser.email,
   });
 
-  const cookieStore = await cookies();
+  const res = NextResponse.json({ success: true });
 
-  cookieStore.set("auth_token", token, {
+  res.cookies.set("auth_token", token, {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
     path: "/",
   });
 
-  return NextResponse.json({ success: true, token });
+  return res;
 }

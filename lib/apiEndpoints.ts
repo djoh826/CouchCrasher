@@ -1,11 +1,15 @@
 import { apiFetch } from "./api";
-import { Property } from "@/types";
+import { Property, Booking } from "@/types";
 
 export type UserPropertiesResponse =
   | { status: "not_host" }
   | { status: "empty"; properties: Property[] }
   | { status: "ok"; properties: Property[] }
   | { status: "error"; error: string };
+export type UserBookingsResponse = {
+  pastBookings: Booking[];
+  upcomingBookings: Booking[];
+};
 
 export const getProperties = (): Promise<Property[]> => {
   return apiFetch<Property[]>("/api/properties");
@@ -21,3 +25,6 @@ export const createBooking = (data: {
   end: string;
   guests: number;
 }) => apiFetch("/api/bookings", { method: "POST", body: JSON.stringify(data) });
+export const getUserBookings = (): Promise<UserBookingsResponse> => {
+  return apiFetch<UserBookingsResponse>("/api/user/bookings");
+};

@@ -13,6 +13,10 @@ export default function Profile() {
     router.push("/login");
   };
 
+  const handleMyBookings = () => {
+    router.push("/user-bookings");
+  };
+
   if (!user) {
     return (
       <div className={styles.container}>
@@ -33,6 +37,13 @@ export default function Profile() {
         </p>
         <button onClick={handleLogout} className={styles.logoutButton}>
           Log out
+        </button>
+        <button
+          onClick={handleMyBookings}
+          className={styles.logoutButton}
+          style={{ marginLeft: "1rem" }}
+        >
+          My Guest Bookings
         </button>
       </div>
     </div>

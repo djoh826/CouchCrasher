@@ -1,0 +1,104 @@
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 1rem;
+  min-height: 80vh;
+  background: var(--color-background-tertiary, #eef2f7);
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+.bookings {
+  max-width: 600px;
+  width: 100%;
+}
+
+.bookings h1 {
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0 0 2rem;
+  color: #111;
+}
+
+.sectionTitle {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #888;
+  margin: 0;
+}
+
+.dropdownHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 0.5px solid #e0e0e0;
+  padding: 0.5rem 0;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.dropdownHeader:hover .sectionTitle {
+  color: #444;
+}
+
+.card {
+  background: #fff;
+  border: 0.5px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cardMeta {
+  flex: 1;
+  min-width: 0;
+}
+
+.property {
+  font-size: 15px;
+  font-weight: 500;
+  color: #111;
+  margin: 0 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dates {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+}
+
+.badgeUpcoming {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #e6f4ea;
+  color: #2d7a3a;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.badgePast {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #f2f2f2;
+  color: #888;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
