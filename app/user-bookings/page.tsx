@@ -25,12 +25,40 @@ export default function UserBookings() {
   if (!data) return <div className={styles.container}>No bookings found.</div>;
 
   const { upcomingBookings, pastBookings } = data;
+
   const fmt = (d: string | Date) =>
     new Date(d).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
     });
+
+  const BookingCard = ({ b }: { b: Booking }) => {
+    const thumb = b.property?.propertyphotos?.[0]?.thumbnailurl;
+    return (
+      <div className={styles.card}>
+        {thumb && (
+          <img
+            src={"https://" + thumb}
+            alt={b.property?.name}
+            className={styles.cardThumb}
+          />
+        )}
+        <div className={styles.cardMeta}>
+          <p className={styles.property}>
+            {b.property?.name ?? `Property #${b.propertyid}`}
+          </p>
+          <p className={styles.dates}>
+            {b.property && `${b.property.city}, ${b.property.state} · `}
+            {fmt(b.checkin)} → {fmt(b.checkout)}
+          </p>
+        </div>
+        <a href={`/property/${b.propertyid}`} className={styles.viewLink}>
+          View
+        </a>
+      </div>
+    );
+  };
 
   return (
     <div className={styles.container}>
@@ -41,15 +69,7 @@ export default function UserBookings() {
           <section>
             <p className={styles.sectionTitle}>Upcoming</p>
             {upcomingBookings.map((b) => (
-              <div key={b.bid} className={styles.card}>
-                <div className={styles.cardMeta}>
-                  <p className={styles.property}>{b.propertyid}</p>
-                  <p className={styles.dates}>
-                    {fmt(b.checkin)} → {fmt(b.checkout)}
-                  </p>
-                </div>
-                <span className={styles.badgeUpcoming}>Upcoming</span>
-              </div>
+              <BookingCard key={b.bid} b={b} />
             ))}
           </section>
         )}
@@ -71,17 +91,7 @@ export default function UserBookings() {
               </span>
             </button>
             {pastOpen &&
-              pastBookings.map((b) => (
-                <div key={b.bid} className={styles.card}>
-                  <div className={styles.cardMeta}>
-                    <p className={styles.property}>{b.propertyid}</p>
-                    <p className={styles.dates}>
-                      {fmt(b.checkin)} → {fmt(b.checkout)}
-                    </p>
-                  </div>
-                  <span className={styles.badgePast}>Past</span>
-                </div>
-              ))}
+              pastBookings.map((b) => <BookingCard key={b.bid} b={b} />)}
           </section>
         )}
       </div>

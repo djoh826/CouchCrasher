@@ -21,6 +21,20 @@ export async function GET(req: Request) {
       where: {
         guestuid: jwtPayload.uid,
       },
+      include: {
+        property: {
+          select: {
+            name: true,
+            city: true,
+            state: true,
+            propertyphotos: {
+              where: { isprimary: true },
+              select: { thumbnailurl: true },
+              take: 1,
+            },
+          },
+        },
+      },
     });
 
     // sort into past and upcoming bookings

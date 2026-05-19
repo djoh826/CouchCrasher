@@ -108,6 +108,12 @@ export interface Booking {
   tax?: number | null;
   cancellationdate?: Date | null;
   refundedamount?: number | null;
+  property?: {
+    name: string;
+    city: string;
+    state: string;
+    propertyphotos?: { thumbnailurl: string }[];
+  } | null;
 }
 
 export interface GuestPastBooking {

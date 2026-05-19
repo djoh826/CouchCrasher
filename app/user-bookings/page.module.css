@@ -81,24 +81,23 @@
   margin: 0;
 }
 
-.badgeUpcoming {
-  font-size: 11px;
+.viewLink {
+  font-size: 13px;
   font-weight: 500;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: #e6f4ea;
-  color: #2d7a3a;
+  color: #6b8cff;
+  text-decoration: none;
   flex-shrink: 0;
   white-space: nowrap;
 }
 
-.badgePast {
-  font-size: 11px;
-  font-weight: 500;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: #f2f2f2;
-  color: #888;
+.viewLink:hover {
+  text-decoration: underline;
+}
+
+.cardThumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  object-fit: cover;
   flex-shrink: 0;
-  white-space: nowrap;
 }
