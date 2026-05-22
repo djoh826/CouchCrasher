@@ -96,30 +96,31 @@ model message {
 }
 
 model property {
-  pid                Int                  @id @default(autoincrement())
-  name               String               @db.VarChar(30)
+  pid                Int                       @id @default(autoincrement())
+  name               String                    @db.VarChar(30)
   hostuid            Int
   maxguests          Int
   numbedrooms        Int
   description        String
   numbathrooms       Int
-  cancelperiod       String               @db.VarChar(20)
+  cancelperiod       String                    @db.VarChar(20)
   refundrate         Float
-  numratings         Int                  @default(0)
-  avgratings         Float                @default(0.0)
+  numratings         Int                       @default(0)
+  avgratings         Float                     @default(0.0)
   nightlyfee         Float
   cleaningfee        Float
   servicefee         Float
-  street             String               @db.VarChar(100)
-  city               String               @db.VarChar(50)
-  state              String               @db.VarChar(50)
-  zipcode            String               @db.VarChar(20)
-  country            String               @db.VarChar(50)
-  latitude           Float                @default(0.0)
-  longitude          Float                @default(0.0)
+  street             String                    @db.VarChar(100)
+  city               String                    @db.VarChar(50)
+  state              String                    @db.VarChar(50)
+  zipcode            String                    @db.VarChar(20)
+  country            String                    @db.VarChar(50)
+  latitude           Float                     @default(0.0)
+  longitude          Float                     @default(0.0)
   headline           String?
+  location           Unsupported("geography")?
   booking            booking[]
-  host               host                 @relation(fields: [hostuid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "propertyfk1")
+  host               host                      @relation(fields: [hostuid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "propertyfk1")
   propertycategories propertycategories[]
   propertyphotos     propertyphotos[]
   propertyreview     propertyreview[]
@@ -130,6 +131,7 @@ model property {
   @@index([latitude, longitude], map: "idx_property_lat_lng")
   @@index([longitude], map: "idx_property_lng")
   @@index([state], map: "idx_property_state")
+  @@index([location], map: "idx_property_location", type: Gist)
 }
 
 model propertycategories {
@@ -212,4 +214,13 @@ model siteimages {
   created_at DateTime @default(now()) @db.Timestamptz(6)
   s3key      String   @db.VarChar
   alttext    String?  @db.VarChar
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model spatial_ref_sys {
+  srid      Int     @id
+  auth_name String? @db.VarChar(256)
+  auth_srid Int?
+  srtext    String? @db.VarChar(2048)
+  proj4text String? @db.VarChar(2048)
 }

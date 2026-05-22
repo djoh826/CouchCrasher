@@ -1,46 +1,60 @@
-import { prisma } from "@/lib/prisma";
-import { redis } from "@/lib/redis";
 import { NextResponse } from "next/server";
+import { redis } from "@/lib/redis";
+import { PropertySearchParams } from "@/lib/search/propertySearchTypes";
+import { buildPropertySearchCacheKey } from "@/lib/cache/propertySearchCache";
+import { searchProperties } from "@/lib/search/searchProperties";
 
-// /api/properties/search?city=dallas&page=1
-// Returns property search results (cached with Redis)
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
 
-    const city = searchParams.get("city") ?? "";
-    const page = Number(searchParams.get("page") ?? "1");
-    const pageSize = 10;
+    const raw: Record<string, string> = Object.fromEntries(
+      searchParams.entries(),
+    );
 
-    // create cache key based on query
-    const cacheKey = `property-search:${city}:${page}`;
+    const params: PropertySearchParams = {
+      city: raw.city,
+      state: raw.state,
 
-    // check redis cache first
-    const cached = await redis.get(cacheKey);
+      lat: raw.lat ? Number(raw.lat) : undefined,
+      lng: raw.lng ? Number(raw.lng) : undefined,
+      radiusKm: raw.radiusKm ? Number(raw.radiusKm) : undefined,
 
-    if (cached !== null) {
-      return NextResponse.json(cached);
+      minPrice: raw.minPrice ? Number(raw.minPrice) : undefined,
+      maxPrice: raw.maxPrice ? Number(raw.maxPrice) : undefined,
+
+      guests: raw.guests ? Number(raw.guests) : undefined,
+
+      page: raw.page ? Number(raw.page) : 1,
+
+      sort: raw.sort as PropertySearchParams["sort"],
+
+      checkIn: raw.checkIn,
+      checkOut: raw.checkOut,
+    };
+
+    const cacheKey = buildPropertySearchCacheKey(params);
+
+    const cached = await redis.get<string>(cacheKey);
+
+    if (cached !== null && typeof cached === "string") {
+      try {
+        const parsed: unknown = JSON.parse(cached);
+        return NextResponse.json(parsed);
+      } catch (err) {
+        console.error("Redis cache parse failed, ignoring cache:", err);
+      }
     }
 
-    // query database if cache miss
-    const properties = await prisma.property.findMany({
-      where: {
-        city: {
-          contains: city,
-          mode: "insensitive",
-        },
-      },
-      take: pageSize,
-      skip: (page - 1) * pageSize,
-    });
+    const results = await searchProperties(params);
 
-    // store results in redis for 60 seconds
-    await redis.set(cacheKey, JSON.stringify(properties), {
+    await redis.set(cacheKey, JSON.stringify(results), {
       ex: 60,
     });
 
-    return NextResponse.json(properties);
-  } catch {
+    return NextResponse.json(results);
+  } catch (err) {
+    console.error("Search API error:", err);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },

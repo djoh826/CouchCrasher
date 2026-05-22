@@ -1,17 +1,15 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Property } from "@/types";
+import { PropertySearchResult } from "@/lib/search/searchProperties";
 import "./PropertyCard.css";
 
 interface PropertyCardProps {
-  property: Property;
+  property: PropertySearchResult;
 }
 
 export default function PropertyCard({ property }: PropertyCardProps) {
-  const primaryPhoto =
-    property.propertyphotos?.find((p) => p.isprimary) ||
-    property.propertyphotos?.[0];
+  const primaryPhoto = property.propertyphotos?.[0];
 
   const photoUrl = primaryPhoto?.photourl
     ? "https://" + primaryPhoto.photourl
@@ -26,7 +24,10 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             alt={property.name}
             width={400}
             height={250}
-            style={{ objectFit: "cover", borderRadius: "16px 16px 0 0" }}
+            style={{
+              objectFit: "cover",
+              borderRadius: "16px 16px 0 0",
+            }}
           />
         ) : (
           <div className="property-image placeholder">No image available</div>
@@ -34,14 +35,20 @@ export default function PropertyCard({ property }: PropertyCardProps) {
 
         <div className="property-info">
           <h3 className="property-title">{property.name}</h3>
+
           <p className="property-location">
             {property.city}, {property.state}
           </p>
-          <p className="property-details">
-            {property.maxguests} guests • {property.numbedrooms} bedrooms •{" "}
-            {property.numbathrooms} bathrooms
-          </p>
+
+          <p className="property-details">{property.maxguests} guests</p>
+
           <p className="property-price">${property.nightlyfee} / night</p>
+
+          {property.distance_km !== undefined && (
+            <p className="property-distance">
+              {property.distance_km.toFixed(1)} km away
+            </p>
+          )}
         </div>
       </div>
     </Link>

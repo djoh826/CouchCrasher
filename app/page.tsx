@@ -4,19 +4,25 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import BookingForm from "@/app/components/BookingForm";
 import PropertyGrid from "@/app/components/PropertyGrid";
-import { Property } from "@/types";
-import { getProperties } from "@/lib/apiEndpoints";
+import {
+  PropertySearchResult,
+  searchProperties,
+} from "@/lib/search/searchProperties";
 import "./page.css";
 
 export default function Home() {
-  const [properties, setProperties] = useState<Property[]>([]);
+  const [properties, setProperties] = useState<PropertySearchResult[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const data = await getProperties();
+        const data = await searchProperties({
+          page: 1,
+          sort: "rating",
+        });
+
         setProperties(data);
       } catch (err) {
         console.error(err);
@@ -25,6 +31,7 @@ export default function Home() {
         setLoading(false);
       }
     };
+
     fetchProperties();
   }, []);
 
@@ -33,16 +40,17 @@ export default function Home() {
       <main className="main-content">
         <section className="hero">
           <h1>Live comfortably like at home, wherever you go</h1>
-          {/* <Link href="/browse" className="cta-primary">
-            Book now
-          </Link> */}
         </section>
 
         <BookingForm />
 
         <section className="featured-properties">
           <h2>Featured Properties</h2>
+
           <div className="results-wrapper">
+            {loading && <p>Loading...</p>}
+            {error && <p>{error}</p>}
+
             {!loading && !error && (
               <PropertyGrid properties={properties} limit={5} />
             )}
