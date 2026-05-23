@@ -16,25 +16,53 @@ export default function UserPropertyForm({
       <table>
         <thead>
           <tr>
+            <th>Thumbnail</th>
             <th>Name</th>
             <th>Street</th>
+            <th>City</th>
             <th>State</th>
             <th>Actions</th>
           </tr>
         </thead>
+
         <tbody>
-          {data.status === "ok" &&
-            data.properties.map((prop) => (
+          {data.properties.map((prop) => {
+            const thumbnail = prop.propertyphotos?.[0]?.thumbnailurl || null;
+
+            const imageUrl = thumbnail ? `https://${thumbnail}` : null;
+
+            return (
               <tr key={prop.pid}>
-                <td>{prop.name}</td>
-                <td>{prop.street}</td>
-                <td>{prop.state}</td>
                 <td>
-                  <Link href="/host/edit">Edit</Link>
-                  <Link href={"/property/" + prop.pid}> View</Link>
+                  {imageUrl ? (
+                    <img
+                      src={imageUrl}
+                      alt={prop.name}
+                      className="property-thumbnail"
+                    />
+                  ) : (
+                    <div className="thumbnail-placeholder">No image</div>
+                  )}
+                </td>
+
+                <td>{prop.name}</td>
+
+                <td>{prop.street}</td>
+
+                <td>{prop.city}</td>
+
+                <td>{prop.state}</td>
+
+                <td>
+                  <div className="actions">
+                    <Link href="/host/edit">Edit</Link>
+
+                    <Link href={"/property/" + prop.pid}>View</Link>
+                  </div>
                 </td>
               </tr>
-            ))}
+            );
+          })}
         </tbody>
       </table>
     </section>

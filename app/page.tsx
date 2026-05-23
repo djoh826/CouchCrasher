@@ -4,10 +4,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import BookingForm from "@/app/components/BookingForm";
 import PropertyGrid from "@/app/components/PropertyGrid";
-import {
-  PropertySearchResult,
-  searchProperties,
-} from "@/lib/search/searchProperties";
+import { PropertySearchResult } from "@/lib/search/searchProperties";
+import { searchProperties } from "@/lib/api/propertySearch";
 import "./page.css";
 
 export default function Home() {

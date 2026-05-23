@@ -7,8 +7,9 @@ table {
 
 th,
 td {
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1rem;
   border-bottom: 1px solid #ccc;
+  vertical-align: middle;
 }
 
 th {
@@ -20,4 +21,30 @@ th {
 tr:hover {
   background-color: var(--background);
   filter: brightness(0.95);
+}
+
+.property-thumbnail {
+  width: 100px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+
+.thumbnail-placeholder {
+  width: 100px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eee;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
