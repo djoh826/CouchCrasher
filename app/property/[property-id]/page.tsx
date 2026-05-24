@@ -4,14 +4,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import styles from "./page.module.css";
-import Link from "next/link";
-import DatePicker from "react-date-picker";
 import BookingCalendar from "@/app/components/BookingCalendar";
 
 interface PropertyPhoto {
   photourl: string;
   isprimary: boolean;
-  order?: number; // photo order 1-5
+  order?: number;
 }
 
 interface Property {
@@ -40,9 +38,11 @@ interface Property {
 export default function PropertyPage() {
   const params = useParams();
   const propertyId = params["property-id"];
+
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   useEffect(() => {
     async function fetchProperty() {
@@ -50,13 +50,9 @@ export default function PropertyPage() {
         const res = await fetch(`/api/properties/${propertyId}`);
         const data = await res.json();
 
-        if (!res.ok) {
-          setError(data.error || "Failed to load property");
-        } else {
-          setProperty(data);
-        }
-      } catch (err) {
-        console.error(err);
+        if (!res.ok) setError(data.error || "Failed to load property");
+        else setProperty(data);
+      } catch {
         setError("Something went wrong");
       } finally {
         setLoading(false);
@@ -70,24 +66,11 @@ export default function PropertyPage() {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
   if (!property) return <p>No property found.</p>;
 
-  const handleShare = () => {
-    // TODO: make this not just take the window's url
-    navigator.clipboard.writeText(window.location.href);
-    console.log("Share button clicked for:", property.name);
-  };
-
-  const handleFavorite = () => {
-    // TODO: implement favorite functionality
-    // POST /api/favorites { propertyId: property.id }
-    console.log("Favorite button clicked for:", property.name);
-  };
-
-  // Build the carousel images array (order 1-5)
   const carouselImages: string[] = [];
   for (let i = 1; i <= 5; i++) {
     const photo = property.propertyphotos?.find((p) => p.order === i);
     carouselImages.push(
-      photo?.photourl ? "https://" + photo.photourl : "/placeholder.png", // fallback
+      photo?.photourl ? "https://" + photo.photourl : "/placeholder.png",
     );
   }
 
@@ -98,28 +81,50 @@ export default function PropertyPage() {
           <span style={{ fontWeight: "bold" }}>{property.name}</span> -{" "}
           {property.headline}
         </h1>
-        <p style={{ marginLeft: "auto" }}>
-          🔗 <button onClick={handleShare}>Share </button> ❤️{" "}
-          <button onClick={handleFavorite}>Favorite</button>
-        </p>
       </span>
 
       <div className={styles.photoCarousel}>
         {carouselImages.map((url, idx) => (
-          <Image
+          <div
             key={idx}
-            className={styles[`item${idx + 1}`]}
-            src={url}
-            alt={`Photo ${idx + 1} of ${property.name}`}
-            width={400}
-            height={300}
-            style={{
-              objectFit: "cover",
-              borderRadius: "12px",
-            }}
-          />
+            className={`${styles.tile} ${styles["tile" + (idx + 1)]}`}
+            onClick={() => setActiveIndex(idx)}
+          >
+            <Image
+              src={url}
+              alt={`Photo ${idx + 1}`}
+              fill
+              sizes="(max-width: 1050px) 100vw, 1050px"
+              style={{ objectFit: "cover" }}
+            />
+          </div>
         ))}
       </div>
+
+      {activeIndex !== null && (
+        <div className={styles.lightbox}>
+          <div
+            className={styles.lightboxBackdrop}
+            onClick={() => setActiveIndex(null)}
+          />
+
+          <button
+            className={styles.closeBtn}
+            onClick={() => setActiveIndex(null)}
+          >
+            ×
+          </button>
+
+          <div className={styles.lightboxInner}>
+            <Image
+              src={carouselImages[activeIndex]}
+              alt="expanded"
+              fill
+              style={{ objectFit: "contain" }}
+            />
+          </div>
+        </div>
+      )}
 
       <section className={styles.propertyDescription}>
         <div className={styles.leftHalf}>
@@ -130,45 +135,17 @@ export default function PropertyPage() {
               {property.numbathrooms} Bathrooms
             </em>
           </p>
-          <hr></hr>
+          <hr />
           <p>{property.description}</p>
         </div>
+
         <div className={styles.rightHalf}>
           <div className={styles.book}>
             <p>$123 for 2 nights</p>
-            {/* dates here */}
-            {/* guests here */}
             <BookingCalendar propertyId={Number(propertyId)} />
           </div>
         </div>
       </section>
-      <hr />
-
-      <ul>
-        <li>
-          <strong>Cancellation Period:</strong> {property.cancelperiod}
-        </li>
-        <li>
-          <strong>Refund Rate:</strong> {property.refundrate}
-        </li>
-        <li>
-          <strong>Nightly Fee:</strong> ${property.nightlyfee.toFixed(2)}
-        </li>
-        <li>
-          <strong>Cleaning Fee:</strong> ${property.cleaningfee.toFixed(2)}
-        </li>
-        <li>
-          <strong>Service Fee:</strong> ${property.servicefee.toFixed(2)}
-        </li>
-        <li>
-          <strong>Address:</strong> {property.street}, {property.city},{" "}
-          {property.state}, {property.zipcode}, {property.country}
-        </li>
-      </ul>
-
-      {/* reviews here */}
-
-      {/* host info here */}
     </section>
   );
 }
