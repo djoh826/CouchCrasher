@@ -10,27 +10,50 @@ const icon = L.icon({
   popupAnchor: [1, -34],
 });
 
-interface Props {
+interface MarkerData {
   lat: number;
   lng: number;
   label: string;
+  href?: string;
 }
 
-export default function PropertyMap({ lat, lng, label }: Props) {
+interface Props {
+  markers: MarkerData[];
+  center?: [number, number];
+  zoom?: number;
+  height?: string;
+}
+
+export default function PropertyMap({
+  markers,
+  center = [32.7767, -96.797],
+  zoom = 11,
+  height = "320px",
+}: Props) {
   return (
     <MapContainer
-      center={[lat, lng]}
-      zoom={14}
-      style={{ height: "320px", width: "100%", borderRadius: "14px" }}
+      center={center}
+      zoom={zoom}
+      style={{ height, width: "100%", borderRadius: "14px" }}
       scrollWheelZoom={false}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={[lat, lng]} icon={icon}>
-        <Popup>{label}</Popup>
-      </Marker>
+      {markers.map((m, i) => (
+        <Marker key={i} position={[m.lat, m.lng]} icon={icon}>
+          <Popup>
+            {m.href ? (
+              <a href={m.href} style={{ fontWeight: 600, color: "#534ab7" }}>
+                {m.label}
+              </a>
+            ) : (
+              <span style={{ fontWeight: 600 }}>{m.label}</span>
+            )}
+          </Popup>
+        </Marker>
+      ))}
     </MapContainer>
   );
 }

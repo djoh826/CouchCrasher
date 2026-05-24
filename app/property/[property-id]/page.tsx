@@ -3,8 +3,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import styles from "./page.module.css";
 import BookingCalendar from "@/app/components/BookingCalendar";
+
+const PropertyMap = dynamic(() => import("@/app/components/PropertyMap"), {
+  ssr: false,
+  loading: () => <div className={styles.mapPlaceholder} />,
+});
 
 interface PropertyPhoto {
   photourl: string;
@@ -43,6 +49,7 @@ export default function PropertyPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [mapExpanded, setMapExpanded] = useState(false);
 
   useEffect(() => {
     async function fetchProperty() {
@@ -148,6 +155,56 @@ export default function PropertyPage() {
           </div>
           <hr className={styles.divider} />
           <p className={styles.descriptionBody}>{property.description}</p>
+
+          <hr className={styles.divider} />
+
+          <div className={styles.mapSection}>
+            <div className={styles.mapHeader}>
+              <h2 className={styles.mapTitle}>Where you&#39;ll be</h2>
+              <p className={styles.mapSubtitle}>
+                {property.street}, {property.city}, {property.state}{" "}
+                {property.zipcode}
+              </p>
+            </div>
+
+            <div className={styles.mapPreview}>
+              <PropertyMap
+                markers={[
+                  {
+                    lat: property.latitude,
+                    lng: property.longitude,
+                    label: property.name,
+                  },
+                ]}
+                center={[property.latitude, property.longitude]}
+                zoom={14}
+                height="260px"
+              />
+              <button
+                className={styles.mapExpandBtn}
+                onClick={() => setMapExpanded(true)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <polyline points="15 3 21 3 21 9" />
+                  <polyline points="9 21 3 21 3 15" />
+                  <line x1="21" y1="3" x2="14" y2="10" />
+                  <line x1="3" y1="21" x2="10" y2="14" />
+                </svg>
+                Expand map
+              </button>
+            </div>
+          </div>
         </div>
 
         <div className={styles.rightHalf}>
@@ -169,6 +226,35 @@ export default function PropertyPage() {
           </div>
         </div>
       </section>
+
+      {mapExpanded && (
+        <div className={styles.lightbox}>
+          <div
+            className={styles.lightboxBackdrop}
+            onClick={() => setMapExpanded(false)}
+          />
+          <button
+            className={styles.closeBtn}
+            onClick={() => setMapExpanded(false)}
+          >
+            ×
+          </button>
+          <div className={styles.mapLightboxInner}>
+            <PropertyMap
+              markers={[
+                {
+                  lat: property.latitude,
+                  lng: property.longitude,
+                  label: property.name,
+                },
+              ]}
+              center={[property.latitude, property.longitude]}
+              zoom={15}
+              height="100%"
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 }
