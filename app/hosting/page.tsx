@@ -1,3 +1,5 @@
+import "../info-page.css";
+
 export default function Hosting() {
   const sections = [
     {
@@ -27,25 +29,32 @@ export default function Hosting() {
   ];
 
   return (
-    <section className="hosting">
-      <nav className="hosting-nav">
-        <ul>
-          {sections.map((section) => (
-            <li key={section.id}>
-              <a href={`#${section.id}`}>{section.title}</a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+    <div className="info-page">
+      <p className="info-page__eyebrow">Hosting</p>
+      <h1 className="info-page__hero">Share your space with the world.</h1>
+      <p className="info-page__lead">
+        Whether it&#39;s a spare room or a full property, hosting on Couch
+        Crasher is simple, flexible, and rewarding.
+      </p>
+      <hr className="info-page__divider" />
 
-      <div className="sections">
-        {sections.map((section) => (
-          <section id={section.id} key={section.id} className="section">
-            <h2>{section.title}</h2>
-            <p>{section.description}</p>
+      <ul className="info-page__sidenav">
+        {sections.map((s) => (
+          <li key={s.id}>
+            <a href={`#${s.id}`}>{s.title}</a>
+          </li>
+        ))}
+      </ul>
+
+      <div className="info-page__sections">
+        {sections.map((s) => (
+          <section id={s.id} key={s.id} className="info-page__section">
+            <p className="info-page__section-label">Hosting</p>
+            <h2>{s.title}</h2>
+            <p>{s.description}</p>
           </section>
         ))}
       </div>
-    </section>
+    </div>
   );
 }

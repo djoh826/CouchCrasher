@@ -1,3 +1,5 @@
+import "../info-page.css";
+
 export default function Support() {
   const sections = [
     {
@@ -33,25 +35,31 @@ export default function Support() {
   ];
 
   return (
-    <section className="support">
-      <nav>
-        <ul>
-          {sections.map((section) => (
-            <li key={section.id}>
-              <a href={`#${section.id}`}>{section.title}</a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+    <div className="info-page">
+      <p className="info-page__eyebrow">Support</p>
+      <h1 className="info-page__hero">How can we help?</h1>
+      <p className="info-page__lead">
+        Browse topics below or jump straight to the section you need.
+      </p>
+      <hr className="info-page__divider" />
 
-      <div>
-        {sections.map((section) => (
-          <section key={section.id} id={section.id}>
-            <h2>{section.title}</h2>
-            <p>{section.description}</p>
+      <ul className="info-page__sidenav">
+        {sections.map((s) => (
+          <li key={s.id}>
+            <a href={`#${s.id}`}>{s.title}</a>
+          </li>
+        ))}
+      </ul>
+
+      <div className="info-page__sections">
+        {sections.map((s) => (
+          <section id={s.id} key={s.id} className="info-page__section">
+            <p className="info-page__section-label">Support</p>
+            <h2>{s.title}</h2>
+            <p>{s.description}</p>
           </section>
         ))}
       </div>
-    </section>
+    </div>
   );
 }

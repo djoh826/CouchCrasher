@@ -36,30 +36,49 @@ export default function Footer() {
   ];
 
   return (
-    <section className="footer">
-      {footerLinks.map((section) => (
-        <div className="columns" key={section.title}>
-          <h3>
-            {section.href ? (
-              <Link className="header-links" href={section.href}>
-                {section.title}
-              </Link>
-            ) : (
-              section.title
-            )}
-          </h3>
+    <footer className="footer">
+      <div className="footer-inner">
+        <div className="footer-brand">
+          <span className="brand-name">
+            Couch Crasher
+            <span className="brand-dot" aria-hidden="true">
+              ·
+            </span>
+          </span>
+          <p className="brand-sub">Feel at home, everywhere.</p>
+        </div>
 
-          {section.links?.map((link) => (
-            <Link
-              className="links"
-              key={link.label}
-              href={section.href ? `${section.href}${link.href}` : link.href}
-            >
-              {link.label}
-            </Link>
+        <div className="footer-columns">
+          {footerLinks.map((section) => (
+            <div className="footer-col" key={section.title}>
+              <h3 className="col-heading">
+                {section.href ? (
+                  <Link className="header-links" href={section.href}>
+                    {section.title}
+                  </Link>
+                ) : (
+                  section.title
+                )}
+              </h3>
+              {section.links?.map((link) => (
+                <Link
+                  className="links"
+                  key={link.label}
+                  href={
+                    section.href ? `${section.href}${link.href}` : link.href
+                  }
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           ))}
         </div>
-      ))}
-    </section>
+      </div>
+
+      <div className="footer-bottom">
+        <p>© {new Date().getFullYear()} Couch Crasher. All rights reserved.</p>
+      </div>
+    </footer>
   );
 }

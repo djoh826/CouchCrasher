@@ -1,20 +1,126 @@
-.primary-nav {
-  background-color: var(--primary);
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.nav-list li > :first-child {
-  color: var(--background);
-  font-weight: bold;
-  font-size: 2rem;
+.primary-nav {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e8e8e8;
+  box-shadow: none;
+  transition: box-shadow 0.25s ease;
+}
+
+.primary-nav.scrolled {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
 .nav-list {
-  display: flex;
-  justify-content: space-around;
-  padding: 1rem 10vw;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 2rem;
+  height: 64px;
+  margin: 0;
 }
 
 ul {
   padding: 0;
   margin: 0;
+}
+
+.nav-brand {
+  justify-self: start;
+}
+
+.nav-brand a {
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: var(--primary);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.nav-brand a:hover {
+  filter: none;
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-links li a {
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.25rem 0;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.nav-links li a::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--accent);
+  transition: width 0.2s ease;
+}
+
+.nav-links li a:hover {
+  color: var(--accent);
+  filter: none;
+}
+
+.nav-links li a:hover::after {
+  width: 100%;
+}
+
+.nav-cta {
+  justify-self: end;
+}
+
+.nav-cta a {
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav-cta a:hover {
+  color: var(--accent);
+  filter: none;
+}
+
+.nav-cta .btn-login {
+  display: inline-block;
+  padding: 0.45rem 1.1rem;
+  border: 1.5px solid var(--accent);
+  border-radius: 999px;
+  color: var(--accent);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  background: transparent;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    filter 0s;
+}
+
+.nav-cta .btn-login:hover {
+  background: var(--accent);
+  color: #ffffff;
+  filter: none;
+}
+
+.nav-cta .btn-login:active {
+  filter: brightness(0.85);
 }
