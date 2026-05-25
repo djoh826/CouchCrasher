@@ -3,11 +3,19 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
-const icon = L.icon({
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
+const icon = L.divIcon({
+  className: "",
+  html: `<div style="
+    width: 28px; height: 28px;
+    background: #534ab7;
+    border: 3px solid #fff;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    box-shadow: 0 2px 6px rgba(83,74,183,0.35);
+  "></div>`,
+  iconSize: [28, 28],
+  iconAnchor: [14, 28],
+  popupAnchor: [0, -30],
 });
 
 interface MarkerData {
@@ -36,10 +44,13 @@ export default function PropertyMap({
       zoom={zoom}
       style={{ height, width: "100%", borderRadius: "14px" }}
       scrollWheelZoom={false}
+      zoomControl={true}
     >
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://carto.com/attributions">CARTO</a>'
+        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+        subdomains="abcd"
+        maxZoom={19}
       />
       {markers.map((m, i) => (
         <Marker key={i} position={[m.lat, m.lng]} icon={icon}>
