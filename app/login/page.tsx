@@ -145,27 +145,29 @@ export default function Login() {
                 Log in
               </button>
             </form>
-            <button
-              type="submit"
-              className={styles.button}
-              onClick={loginAsHost}
-            >
-              Login as Host (dev)
-            </button>
-            <button
-              type="submit"
-              className={styles.button}
-              onClick={loginAsGuest}
-            >
-              Login as Guest (dev)
-            </button>
-            <button
-              type="submit"
-              className={styles.button}
-              onClick={loginAsAdmin}
-            >
-              Login as Admin (dev)
-            </button>
+            <div className={styles.devButtonRow}>
+              <button
+                type="button"
+                className={styles.button}
+                onClick={loginAsHost}
+              >
+                Host (dev)
+              </button>
+              <button
+                type="button"
+                className={styles.button}
+                onClick={loginAsGuest}
+              >
+                Guest (dev)
+              </button>
+              <button
+                type="button"
+                className={styles.button}
+                onClick={loginAsAdmin}
+              >
+                Admin (dev)
+              </button>
+            </div>
           </div>
 
           {/* Register */}
