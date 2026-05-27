@@ -29,7 +29,7 @@ export async function GET(
 
     const property = await prisma.property.findUnique({
       where: { pid },
-      include: { propertyphotos: true },
+      include: { propertyphotos: true, propertyreview: true },
     });
 
     if (!property) {

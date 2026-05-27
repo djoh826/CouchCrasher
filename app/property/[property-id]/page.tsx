@@ -6,6 +6,8 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import styles from "./page.module.css";
 import BookingCalendar from "@/app/components/BookingCalendar";
+import PropertyReviews from "@/app/components/PropertyReviews";
+import PropertyReviewSummary from "@/app/components/PropertyReviewSummary";
 
 const PropertyMap = dynamic(() => import("@/app/components/PropertyMap"), {
   ssr: false,
@@ -39,6 +41,8 @@ interface Property {
   longitude: number;
   headline: string;
   propertyphotos?: PropertyPhoto[];
+  numratings: number;
+  avgratings: number;
 }
 
 export default function PropertyPage() {
@@ -147,10 +151,7 @@ export default function PropertyPage() {
         <div className={styles.leftHalf}>
           <div className={styles.descriptionHeader}>
             <div className={styles.ratingRow}>
-              <span className={styles.ratingStar}>★</span>
-              <span className={styles.ratingScore}>4.8</span>
-              <span className={styles.ratingDivider}>·</span>
-              <span className={styles.ratingReviews}>32 reviews</span>
+              <PropertyReviewSummary propertyId={Number(propertyId)} />
             </div>
           </div>
           <hr className={styles.divider} />
@@ -226,6 +227,11 @@ export default function PropertyPage() {
           </div>
         </div>
       </section>
+      <PropertyReviews
+        propertyId={Number(propertyId)}
+        avgRating={property.avgratings}
+        numRatings={property.numratings}
+      />
 
       {mapExpanded && (
         <div className={styles.lightbox}>

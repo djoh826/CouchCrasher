@@ -1,0 +1,23 @@
+.reviewSummaryHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.star {
+  color: #f5a623;
+}
+
+.score {
+  font-weight: 600;
+}
+
+.dot {
+  opacity: 0.5;
+}
+
+.count {
+  color: #555;
+}
