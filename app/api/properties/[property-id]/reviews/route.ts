@@ -51,10 +51,11 @@ export async function GET(
 // POST /api/properties/[property-id]/reviews
 export async function POST(
   req: Request,
-  { params }: { params: { "property-id": string } },
+  { params }: { params: Promise<{ "property-id": string }> },
 ) {
   try {
-    const propertyId = parseInt(params["property-id"]);
+    const { "property-id": propertyIdParam } = await params;
+    const propertyId = parseInt(propertyIdParam);
     if (isNaN(propertyId)) {
       return NextResponse.json(
         { error: "Invalid property ID" },
