@@ -54,6 +54,10 @@ export default function PropertyPage() {
   const [error, setError] = useState("");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [mapExpanded, setMapExpanded] = useState(false);
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [galleryActiveIndex, setGalleryActiveIndex] = useState<number | null>(
+    null,
+  );
 
   useEffect(() => {
     async function fetchProperty() {
@@ -71,6 +75,23 @@ export default function PropertyPage() {
     fetchProperty();
   }, [propertyId]);
 
+  // Close gallery on Escape key
+  useEffect(() => {
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        if (galleryActiveIndex !== null) {
+          setGalleryActiveIndex(null);
+        } else {
+          setGalleryOpen(false);
+          setActiveIndex(null);
+          setMapExpanded(false);
+        }
+      }
+    }
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [galleryActiveIndex]);
+
   if (loading) return <p>Loading property...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
   if (!property) return <p>No property found.</p>;
@@ -82,6 +103,16 @@ export default function PropertyPage() {
       photo?.photourl ? "https://" + photo.photourl : "/placeholder.png",
     );
   }
+
+  const allPhotos: string[] =
+    property.propertyphotos && property.propertyphotos.length > 0
+      ? property.propertyphotos
+          .slice()
+          .sort((a, b) => (a.order ?? 99) - (b.order ?? 99))
+          .map((p) =>
+            p.photourl ? "https://" + p.photourl : "/placeholder.png",
+          )
+      : carouselImages;
 
   return (
     <section className={styles.propertyPage}>
@@ -122,6 +153,33 @@ export default function PropertyPage() {
             />
           </div>
         ))}
+
+        <button
+          className={styles.showAllBtn}
+          onClick={(e) => {
+            e.stopPropagation();
+            setGalleryOpen(true);
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+          </svg>
+          Show all photos
+        </button>
       </div>
 
       {activeIndex !== null && (
@@ -144,6 +202,85 @@ export default function PropertyPage() {
               style={{ objectFit: "contain" }}
             />
           </div>
+        </div>
+      )}
+
+      {galleryOpen && (
+        <div className={styles.galleryOverlay}>
+          <div className={styles.galleryHeader}>
+            <button
+              className={styles.galleryBackBtn}
+              onClick={() => setGalleryOpen(false)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <line x1="19" y1="12" x2="5" y2="12" />
+                <polyline points="12 19 5 12 12 5" />
+              </svg>
+              Back to listing
+            </button>
+            <span className={styles.galleryCount}>
+              {allPhotos.length} photo{allPhotos.length !== 1 ? "s" : ""}
+            </span>
+          </div>
+
+          <div className={styles.galleryTitle}>
+            <h2>{property.name}</h2>
+            <p>
+              {property.city}, {property.state}
+            </p>
+          </div>
+
+          <div className={styles.galleryGrid}>
+            {allPhotos.map((url, idx) => (
+              <div
+                key={idx}
+                className={styles.galleryItem}
+                onClick={() => setGalleryActiveIndex(idx)}
+              >
+                <Image
+                  src={url}
+                  alt={`Photo ${idx + 1}`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
+            ))}
+          </div>
+
+          {galleryActiveIndex !== null && (
+            <div className={styles.lightbox}>
+              <div
+                className={styles.lightboxBackdrop}
+                onClick={() => setGalleryActiveIndex(null)}
+              />
+              <button
+                className={styles.closeBtn}
+                onClick={() => setGalleryActiveIndex(null)}
+              >
+                x
+              </button>
+              <div className={styles.lightboxInner}>
+                <Image
+                  src={allPhotos[galleryActiveIndex]}
+                  alt="expanded"
+                  fill
+                  style={{ objectFit: "contain" }}
+                />
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -243,7 +380,7 @@ export default function PropertyPage() {
             className={styles.closeBtn}
             onClick={() => setMapExpanded(false)}
           >
-            ×
+            x
           </button>
           <div className={styles.mapLightboxInner}>
             <PropertyMap

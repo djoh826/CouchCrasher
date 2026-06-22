@@ -64,6 +64,7 @@
 }
 
 .photoCarousel {
+  position: relative;
   width: 100%;
   height: 480px;
   display: grid;
@@ -107,6 +108,129 @@
 .tile5 {
   grid-column: 3;
   grid-row: 2;
+}
+
+/* Show all photos button */
+.showAllBtn {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #ffffff;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 999px;
+  padding: 0.45rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--footer-bg, #2c2c2a);
+  cursor: pointer;
+  z-index: 10;
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.showAllBtn:hover {
+  border-color: var(--accent);
+  box-shadow: 0 3px 12px rgba(83, 74, 183, 0.2);
+}
+
+/* Full gallery overlay */
+.galleryOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #fff;
+  overflow-y: auto;
+}
+
+.galleryHeader {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
+  border-bottom: 1px solid #ebebeb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.5rem;
+}
+
+.galleryBackBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--footer-bg, #2c2c2a);
+  cursor: pointer;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  transition: background 0.15s ease;
+}
+
+.galleryBackBtn:hover {
+  background: #f2f2f2;
+}
+
+.galleryCount {
+  font-size: 0.82rem;
+  color: #888;
+  font-weight: 500;
+}
+
+.galleryTitle {
+  max-width: 900px;
+  margin: 1.75rem auto 1.25rem;
+  padding: 0 1.5rem;
+}
+
+.galleryTitle h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--footer-bg, #2c2c2a);
+  margin: 0 0 0.2rem;
+}
+
+.galleryTitle p {
+  font-size: 0.9rem;
+  color: #888;
+  margin: 0;
+}
+
+.galleryGrid {
+  max-width: 900px;
+  margin: 0 auto 3rem;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.galleryItem {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f0f0f0;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.galleryItem:hover {
+  filter: brightness(1.06);
+}
+
+/* First photo spans full width */
+.galleryItem:first-child {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 7;
 }
 
 .propertyDescription {
