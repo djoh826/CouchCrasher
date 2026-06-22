@@ -11,14 +11,12 @@ export async function GET(
   try {
     const params = await context.params;
     const propertyId = params["property-id"];
-
     if (!propertyId) {
       return NextResponse.json(
         { error: "Property ID not provided" },
         { status: 400 },
       );
     }
-
     const pid = Number(propertyId);
     if (isNaN(pid)) {
       return NextResponse.json(
@@ -26,25 +24,34 @@ export async function GET(
         { status: 400 },
       );
     }
-
     const property = await prisma.property.findUnique({
       where: { pid },
-      include: { propertyphotos: true, propertyreview: true },
+      include: {
+        propertyphotos: true,
+        propertyreview: true,
+        host: {
+          include: {
+            users: {
+              select: {
+                name: true,
+                pictureurl: true,
+              },
+            },
+          },
+        },
+      },
     });
-
     if (!property) {
       return NextResponse.json(
         { error: "Property not found" },
         { status: 404 },
       );
     }
-
     return NextResponse.json(property);
   } catch (err) {
     if (err instanceof HttpError) {
       return NextResponse.json({ error: err.message }, { status: err.status });
     }
-
     console.error(err);
     return NextResponse.json(
       { error: "Internal Server Error" },

@@ -1,0 +1,160 @@
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  background: #fafafa;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 14px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.pill:hover {
+  border-color: var(--accent);
+  box-shadow: 0 2px 10px rgba(83, 74, 183, 0.1);
+}
+
+.pillText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.pillName {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--footer-bg, #2c2c2a);
+}
+
+.pillMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: #888;
+}
+
+.pillChevron {
+  color: #aaa;
+  flex-shrink: 0;
+}
+
+.avatarSm {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.avatarLg {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.avatarFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent, #534ab7);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.03em;
+}
+
+.section {
+  margin-top: 3.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid #ebebeb;
+  scroll-margin-top: 100px; /* offset for sticky nav */
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--footer-bg, #2c2c2a);
+  margin: 0 0 1.25rem;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  background: #fafafa;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 20px;
+  padding: 2rem 2.5rem;
+}
+
+.cardLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.cardName {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--footer-bg, #2c2c2a);
+  text-align: center;
+}
+
+.reviewsLink {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+}
+
+.reviewsLink:hover {
+  opacity: 0.7;
+}
+
+.cardDivider {
+  width: 1px;
+  align-self: stretch;
+  background: #e8e8e8;
+  flex-shrink: 0;
+}
+
+.cardStats {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.statValue {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--footer-bg, #2c2c2a);
+}
+
+.statLabel {
+  font-size: 0.78rem;
+  color: #888;
+  font-weight: 500;
+}

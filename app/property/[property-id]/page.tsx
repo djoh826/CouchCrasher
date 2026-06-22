@@ -8,6 +8,8 @@ import styles from "./page.module.css";
 import BookingCalendar from "@/app/components/BookingCalendar";
 import PropertyReviews from "@/app/components/PropertyReviews";
 import PropertyReviewSummary from "@/app/components/PropertyReviewSummary";
+import RelatedStays from "@/app/components/RelatedStays";
+import { HostPill, HostSection } from "@/app/components/HostSection";
 
 const PropertyMap = dynamic(() => import("@/app/components/PropertyMap"), {
   ssr: false,
@@ -18,6 +20,19 @@ interface PropertyPhoto {
   photourl: string;
   isprimary: boolean;
   order?: number;
+}
+
+interface HostUser {
+  name: string;
+  pictureurl?: string | null;
+}
+
+interface Host {
+  uid: number;
+  numhostratings?: number | null;
+  avghostratings?: number | null;
+  avgpropertyrating?: number | null;
+  users: HostUser;
 }
 
 interface Property {
@@ -43,6 +58,7 @@ interface Property {
   propertyphotos?: PropertyPhoto[];
   numratings: number;
   avgratings: number;
+  host?: Host | null;
 }
 
 export default function PropertyPage() {
@@ -75,7 +91,6 @@ export default function PropertyPage() {
     fetchProperty();
   }, [propertyId]);
 
-  // Close gallery on Escape key
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
       if (e.key === "Escape") {
@@ -113,6 +128,8 @@ export default function PropertyPage() {
             p.photourl ? "https://" + p.photourl : "/placeholder.png",
           )
       : carouselImages;
+
+  const host = property.host ?? null;
 
   return (
     <section className={styles.propertyPage}>
@@ -292,6 +309,19 @@ export default function PropertyPage() {
             </div>
           </div>
           <hr className={styles.divider} />
+
+          {host && (
+            <>
+              <HostPill
+                name={host.users.name}
+                pictureurl={host.users.pictureurl}
+                avghostratings={host.avghostratings}
+                numhostratings={host.numhostratings}
+              />
+              <hr className={styles.divider} />
+            </>
+          )}
+
           <p className={styles.descriptionBody}>{property.description}</p>
 
           <hr className={styles.divider} />
@@ -364,10 +394,30 @@ export default function PropertyPage() {
           </div>
         </div>
       </section>
+
       <PropertyReviews
         propertyId={Number(propertyId)}
         avgRating={property.avgratings}
         numRatings={property.numratings}
+      />
+
+      {host && (
+        <HostSection
+          hostUid={host.uid}
+          name={host.users.name}
+          pictureurl={host.users.pictureurl}
+          avghostratings={host.avghostratings}
+          numhostratings={host.numhostratings}
+          avgpropertyrating={host.avgpropertyrating}
+        />
+      )}
+
+      <RelatedStays
+        currentPid={property.pid}
+        latitude={property.latitude}
+        longitude={property.longitude}
+        city={property.city}
+        state={property.state}
       />
 
       {mapExpanded && (
