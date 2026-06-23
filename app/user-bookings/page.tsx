@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import { getUserBookings } from "@/lib/apiEndpoints";
 import { Booking } from "@/types";
+import ReviewModal from "@/app/components/ReviewModal";
 
 type UserBookingsResponse = {
   pastBookings: Booking[];
@@ -13,6 +14,8 @@ export default function UserBookings() {
   const [data, setData] = useState<UserBookingsResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [pastOpen, setPastOpen] = useState(false);
+  const [reviewBooking, setReviewBooking] = useState<Booking | null>(null);
+  const [reviewedBids, setReviewedBids] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     getUserBookings()
@@ -33,8 +36,9 @@ export default function UserBookings() {
       year: "numeric",
     });
 
-  const BookingCard = ({ b }: { b: Booking }) => {
+  const BookingCard = ({ b, isPast }: { b: Booking; isPast?: boolean }) => {
     const thumb = b.property?.propertyphotos?.[0]?.thumbnailurl;
+    const alreadyReviewed = reviewedBids.has(b.bid);
     return (
       <div className={styles.card}>
         {thumb && (
@@ -53,9 +57,23 @@ export default function UserBookings() {
             {fmt(b.checkin)} → {fmt(b.checkout)}
           </p>
         </div>
-        <a href={`/property/${b.propertyid}`} className={styles.viewLink}>
-          View
-        </a>
+        <div className={styles.cardActions}>
+          {isPast &&
+            (alreadyReviewed ? (
+              <span className={styles.reviewedBadge}>✓ Reviewed</span>
+            ) : (
+              <button
+                className={styles.reviewBtn}
+                onClick={() => setReviewBooking(b)}
+                type="button"
+              >
+                Leave a review
+              </button>
+            ))}
+          <a href={`/property/${b.propertyid}`} className={styles.viewLink}>
+            View
+          </a>
+        </div>
       </div>
     );
   };
@@ -64,7 +82,6 @@ export default function UserBookings() {
     <div className={styles.container}>
       <div className={styles.bookings}>
         <h1>My bookings</h1>
-
         {upcomingBookings.length > 0 && (
           <section>
             <p className={styles.sectionTitle}>Upcoming</p>
@@ -73,7 +90,6 @@ export default function UserBookings() {
             ))}
           </section>
         )}
-
         {pastBookings.length > 0 && (
           <section>
             <button
@@ -91,10 +107,21 @@ export default function UserBookings() {
               </span>
             </button>
             {pastOpen &&
-              pastBookings.map((b) => <BookingCard key={b.bid} b={b} />)}
+              pastBookings.map((b) => <BookingCard key={b.bid} b={b} isPast />)}
           </section>
         )}
       </div>
+
+      {reviewBooking && (
+        <ReviewModal
+          booking={reviewBooking}
+          onClose={() => setReviewBooking(null)}
+          onSuccess={() => {
+            setReviewedBids((prev) => new Set(prev).add(reviewBooking.bid));
+            setReviewBooking(null);
+          }}
+        />
+      )}
     </div>
   );
 }

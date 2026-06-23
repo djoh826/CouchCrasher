@@ -1,0 +1,260 @@
+.page {
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 5rem;
+  color: var(--text);
+}
+
+.status {
+  padding: 3rem 0;
+  text-align: center;
+  color: #888;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--footer-bg, #2c2c2a);
+  text-decoration: none;
+  margin-bottom: 2rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  transition: background 0.15s;
+}
+
+.backLink:hover {
+  background: #f2f2f2;
+}
+
+.layout {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+.profileCard {
+  background: #fafafa;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  position: sticky;
+  top: 88px;
+}
+
+.avatar {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.avatarFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent, #534ab7);
+  color: #fff;
+  font-weight: 700;
+}
+
+.hostName {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--footer-bg, #2c2c2a);
+  margin: 0;
+  text-align: center;
+}
+
+.statGrid {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0.5rem 0;
+  border-top: 1px solid #ebebeb;
+  border-bottom: 1px solid #ebebeb;
+  width: 100%;
+  margin: 0.25rem 0;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.statVal {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--footer-bg, #2c2c2a);
+}
+
+.statLabel {
+  font-size: 0.72rem;
+  color: #888;
+  font-weight: 500;
+  text-align: center;
+}
+
+.propertiesSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.propertiesLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #aaa;
+  margin: 0;
+}
+
+.propertyLink {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.propertyLink:hover {
+  background: #f0f0f0;
+}
+
+.showMoreBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: none;
+  padding: 0.4rem 0.6rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent, #534ab7);
+  transition: background 0.15s;
+  text-align: left;
+}
+
+.showMoreBtn:hover {
+  background: #f0f0f0;
+}
+
+.showMoreDots {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: #aaa;
+}
+
+.propertyName {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--footer-bg, #2c2c2a);
+}
+
+.propertyLocation {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+/* ── Reviews ── */
+.reviewsMain {
+  flex: 1;
+  min-width: 0;
+}
+
+.reviewsTitle {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--footer-bg, #2c2c2a);
+  margin: 0 0 1.5rem;
+}
+
+.noReviews {
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.reviewsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.reviewCard {
+  background: #fff;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.reviewHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.reviewerInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.reviewerName {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--footer-bg, #2c2c2a);
+  margin: 0;
+}
+
+.reviewDate {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin: 0;
+}
+
+.stars {
+  display: flex;
+  gap: 0.05rem;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.starFilled {
+  color: #f5a623;
+}
+
+.starEmpty {
+  color: #ddd;
+}
+
+.reviewComment {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: #555;
+  margin: 0;
+}

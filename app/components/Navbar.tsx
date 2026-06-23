@@ -39,6 +39,9 @@ export default function Navbar() {
               <li>
                 <Link href="/host">My Listings</Link>
               </li>
+              <li>
+                <Link href="/user-bookings">My Guest Bookings</Link>
+              </li>
             </ul>
           </li>
 

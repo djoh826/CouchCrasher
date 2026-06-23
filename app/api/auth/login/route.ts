@@ -2,7 +2,6 @@ import { prisma } from "@/lib/prisma";
 import { verifyPassword } from "@/lib/auth";
 import { signJwt } from "@/lib/jwt";
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
   const { email, password } = await req.json();
@@ -26,7 +25,15 @@ export async function POST(req: Request) {
     email: dbUser.email,
   });
 
-  const res = NextResponse.json({ success: true });
+  const res = NextResponse.json({
+    success: true,
+
+    /* ===========================
+       DEV ONLY (COMMENT OUT IN PROD)
+       Used for Bruno / API testing
+    =========================== */
+    token: token,
+  });
 
   res.cookies.set("auth_token", token, {
     httpOnly: true,
